@@ -1,0 +1,20 @@
+body {
+  font: 24px 'Gentium Plus', serif;
+  color: #333333;
+  text-align: center;
+}
+
+p {
+  line-height: 1.5;
+  margin: 0;
+  padding: 0.25em;
+}
+
+#text {
+  width: 555px;
+  margin: 0 auto;
+}
+
+.current {
+  background-color: #fffbf1;
+}
