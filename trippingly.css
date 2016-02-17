@@ -1,5 +1,5 @@
 body {
-  font: 24px 'Gentium Plus', serif;
+  font: 24px 'Linux Libertine', serif;
   color: #333333;
   text-align: center;
 }
@@ -13,6 +13,16 @@ p {
 #text {
   width: 555px;
   margin: 0 auto;
+}
+
+#buttons {
+  width: 555px;
+  margin: 0 auto;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: #efefef;
 }
 
 .current {
