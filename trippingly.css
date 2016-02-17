@@ -15,6 +15,8 @@ p {
   margin: 0 auto;
 }
 
+/*
+
 #buttons {
   width: 555px;
   margin: 0 auto;
@@ -25,6 +27,28 @@ p {
   background-color: #efefef;
 }
 
+*/
+
 .current {
   background-color: #fffbf1;
+}
+
+/**/
+
+.container { 
+  /* fixed position a zero-height full width container */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* center all inline content */
+  text-align: center;
+  background-color: #efefef;
+}
+
+.container > div {
+  /* make the block inline */
+  display: inline-block;
+  /* reset container's center alignment */
+  text-align: left;
 }
