@@ -11,7 +11,7 @@ p {
 }
 
 #text-pane {
-  max-width: 555px;
+  max-width: 550px;
   margin: 0 auto;
   background-color: #efefef;
 }
@@ -20,34 +20,12 @@ p {
   background-color: #fffbf1;
 }
 
-/*
-
-#buttons {
+footer {
   position: fixed;
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background-color: #efefef;
-  width: 555px;
+  max-width: 550px;
   margin: 0 auto;
+  background-color: #e3e3e3;
 }
-
-.container { 
-  /* fixed position a zero-height full width container
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  /* center all inline content
-  text-align: center;
-  background-color: #efefef;
-}
-
-.container > div {
-  /* make the block inline
-  display: inline-block;
-  /* reset container's center alignment
-  text-align: left;
-}
-
-*/
