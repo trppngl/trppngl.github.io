@@ -28,4 +28,5 @@ footer {
   max-width: 550px;
   margin: 0 auto;
   background-color: #e3e3e3;
+  -webkit-backface-visibility: hidden;
 }
