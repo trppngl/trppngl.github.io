@@ -10,14 +10,17 @@ p {
   padding: 0.25em;
 }
 
-#text {
-  width: 555px;
+#text-pane {
+  max-width: 555px;
   margin: 0 auto;
+  background-color: #efefef;
 }
 
 .current {
   background-color: #fffbf1;
 }
+
+/*
 
 #buttons {
   position: fixed;
@@ -25,9 +28,9 @@ p {
   left: 0px;
   right: 0px;
   background-color: #efefef;
+  width: 555px;
+  margin: 0 auto;
 }
-
-/*
 
 .container { 
   /* fixed position a zero-height full width container
