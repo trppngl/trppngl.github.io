@@ -2,30 +2,35 @@ body {
   font: 24px 'Linux Libertine', serif;
   color: #333333;
   text-align: center;
+  margin: 0;
 }
 
 p {
   line-height: 1.5;
   margin: 0;
-  padding: 0.25em;
-}
-
-#text-pane {
-  max-width: 550px;
-  margin: 0 auto;
-  background-color: #efefef;
+  padding: 0.25em; /* 6px, look into this */
 }
 
 .current {
   background-color: #fffbf1;
 }
 
-#buttons {
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  max-width: 550px;
+#text-pane {
   margin: 0 auto;
-  background-color: #e3e3e3;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column-reverse;
+  max-width: 550px;
+  height: 100vh;
+}
+
+#text {
+  order: 2;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+#buttons {
+  order: 1;
+  flex-shrink: 1;
 }
