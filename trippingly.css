@@ -3,6 +3,7 @@ body {
   color: #333333;
   text-align: center;
   margin: 0;
+  background-color: #ffffff;
 }
 
 p {
@@ -13,6 +14,7 @@ p {
 
 button {
   font: 24px 'Linux Libertine', serif;
+  margin: 10px 0;
 }
 
 .current {
@@ -21,7 +23,6 @@ button {
 
 #text-pane {
   margin: 0 auto;
-  background-color: #ffffff;
   display: flex;
   flex-direction: column-reverse;
   max-width: 550px;
