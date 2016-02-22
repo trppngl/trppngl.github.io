@@ -21,7 +21,7 @@ button {
 
 #text-pane {
   margin: 0 auto;
-  background-color: #fafafa;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column-reverse;
   max-width: 550px;
