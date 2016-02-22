@@ -1,8 +1,13 @@
+html {
+  height: 100%;
+}
+
 body {
   font: 24px 'Linux Libertine', serif;
   color: #333333;
   text-align: center;
   margin: 0;
+  height: 100%;
 }
 
 p {
@@ -21,7 +26,7 @@ p {
   display: flex;
   flex-direction: column-reverse;
   max-width: 550px;
-  height: 100vh;
+  height: 100%;
 }
 
 #text {
