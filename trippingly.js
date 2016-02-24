@@ -24,7 +24,7 @@ var playAll = 0;
 //
 
 function prev() {
-  var threshold = times[currentIndex].start + 0.4;
+  var threshold = times[currentIndex].start + 0.5; // up from 0.2 b/c 300ms gap
   if (audio.currentTime > threshold) {
     startSeg(currentIndex);
   } else if (currentIndex > 0) {
