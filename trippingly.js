@@ -24,7 +24,7 @@ var playAll = 0;
 //
 
 function prev() {
-  var threshold = times[currentIndex].start + 0.2;
+  var threshold = times[currentIndex].start + 0.25;
   if (audio.currentTime > threshold) {
     startSeg(currentIndex);
   } else if (currentIndex > 0) {
@@ -95,13 +95,13 @@ function togglePlayButton() {
   }
 }
 
-// DRY and 
+// Improve?
 
 function scroll() {
   var segBox = segs[currentIndex].getBoundingClientRect();
   var segTop = segBox.top;
   var segBottom = segBox.bottom;
-  var viewBottom = text.getBoundingClientRect().bottom; // or .height? same?
+  var viewBottom = text.getBoundingClientRect().bottom;
   var scrollChange = 0;
   if (segTop < 0) {
     scrollChange = segTop;
