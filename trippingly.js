@@ -24,7 +24,7 @@ var playAll = 0;
 //
 
 function prev() {
-  var threshold = times[currentIndex].start + 0.2;
+  var threshold = times[currentIndex].start + 0.4;
   if (audio.currentTime > threshold) {
     startSeg(currentIndex);
   } else if (currentIndex > 0) {
