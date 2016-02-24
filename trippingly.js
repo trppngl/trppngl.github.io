@@ -3,15 +3,15 @@ var text = document.getElementById('text');
 var buttons = document.getElementById('buttons');
 var playButton = document.getElementById('play');
 
-var segments = [];
-segments.push.apply(segments, document.getElementsByClassName('segment'));
+var segs = [];
+segs.push.apply(segs, document.getElementsByClassName('seg'));
 
-var length = segments.length;
+var length = segs.length;
 
 var times = [];
 for (i = 0; i < length; i++) {
-  var start = Number(segments[i].getAttribute('data-start'));
-  var stop = Number(segments[i].getAttribute('data-stop'));
+  var start = Number(segs[i].getAttribute('data-start'));
+  var stop = Number(segs[i].getAttribute('data-stop'));
   times.push({
     'start': start,
     'stop': stop
@@ -26,21 +26,21 @@ var playAll = 0;
 function prev() {
   var threshold = times[currentIndex].start + 0.2;
   if (audio.currentTime > threshold) {
-    startSegment(currentIndex);
+    startSeg(currentIndex);
   } else if (currentIndex > 0) {
-    startSegment(currentIndex - 1);
+    startSeg(currentIndex - 1);
   }
 }
 
 function next() {
   if (currentIndex < length - 1) {
-    startSegment(currentIndex + 1);
+    startSeg(currentIndex + 1);
   }
 }
 
-function startSegment(targetIndex) {
+function startSeg(targetIndex) {
   if (currentIndex != targetIndex) {
-    changeSegment(targetIndex);
+    changeSeg(targetIndex);
   }
   audio.currentTime = times[currentIndex].start;
   if (audio.paused) {
@@ -48,12 +48,13 @@ function startSegment(targetIndex) {
   }
 }
 
-function changeSegment(targetIndex) {
+function changeSeg(targetIndex) {
   if (currentIndex >= 0) {
-    segments[currentIndex].classList.remove('current');
+    segs[currentIndex].classList.remove('current');
   }
   currentIndex = targetIndex;
-  segments[currentIndex].classList.add('current');
+  segs[currentIndex].classList.add('current');
+  scroll();
 }
 
 function playAudio() {
@@ -94,11 +95,27 @@ function togglePlayButton() {
   }
 }
 
+// DRY and 
+
+function scroll() {
+  var segBox = segs[currentIndex].getBoundingClientRect();
+  var segTop = segBox.top;
+  var segBottom = segBox.bottom;
+  var viewBottom = text.getBoundingClientRect().bottom; // or .height? same?
+  var scrollChange = 0;
+  if (segTop < 0) {
+    scrollChange = segTop;
+  } else if (segBottom > viewBottom) {
+    scrollChange = segBottom - viewBottom;
+  }
+  text.scrollTop += scrollChange;
+}
+
 //
 
 function handleTextClick(e) {
-  if (e.target.classList.contains('segment')) {
-    startSegment(Number(e.target.getAttribute('id')));
+  if (e.target.classList.contains('seg')) {
+    startSeg(Number(e.target.getAttribute('id')));
   }
 }
 
