@@ -151,5 +151,5 @@ function handleKeydown(e) {
 //
 
 window.addEventListener('keydown', handleKeydown, false);
-//text.addEventListener('click', handleTextClick, false);
+text.addEventListener('click', handleTextClick, false);
 buttons.addEventListener('click', handleButtonClick, false);
