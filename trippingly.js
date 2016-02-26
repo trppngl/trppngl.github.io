@@ -1,4 +1,5 @@
 var audio = document.getElementById('audio');
+var highlight = document.getElementById('highlight');
 var text = document.getElementById('text');
 var buttons = document.getElementById('buttons');
 var playButton = document.getElementById('play');
@@ -24,7 +25,7 @@ var playAll = 0;
 //
 
 function prev() {
-  var threshold = times[currentIndex].start + 0.5; // up from 0.2 b/c 300ms gap
+  var threshold = times[currentIndex].start + 0.5; // Up from 0.2 b/c 300ms gap
   if (audio.currentTime > threshold) {
     startSeg(currentIndex);
   } else if (currentIndex > 0) {
@@ -38,6 +39,8 @@ function next() {
   }
 }
 
+// Condense/combine these next three?
+
 function startSeg(targetIndex) {
   if (currentIndex != targetIndex) {
     changeSeg(targetIndex);
@@ -49,6 +52,20 @@ function startSeg(targetIndex) {
 }
 
 function changeSeg(targetIndex) {
+  currentIndex = targetIndex;
+  scroll();
+}
+
+function scroll() {
+  var segBox = segs[currentIndex].getBoundingClientRect();
+  var segTop = segBox.top + text.scrollTop;
+  var segHt = segBox.height;
+  var newStyle = 'top: ' + segTop + 'px; height: ' + segHt + 'px;'
+  highlight.style = newStyle;
+}
+
+/*
+function changeSeg(targetIndex) {
   if (currentIndex >= 0) {
     segs[currentIndex].classList.remove('current');
   }
@@ -56,6 +73,7 @@ function changeSeg(targetIndex) {
   segs[currentIndex].classList.add('current');
   scroll();
 }
+*/
 
 function playAudio() {
   audio.play();
@@ -64,7 +82,7 @@ function playAudio() {
 
 function stopWatch() {
   if (audio.currentTime > times[currentIndex].stop) {
-    if (playAll === 1 && currentIndex < length - 1) { // repeated in next()
+    if (playAll === 1 && currentIndex < length - 1) { // Repeated in next()
       next();
     } else {
       pauseAudio();
@@ -95,8 +113,7 @@ function togglePlayButton() {
   }
 }
 
-// Improve?
-
+/*
 function scroll() {
   var segBox = segs[currentIndex].getBoundingClientRect();
   var segTop = segBox.top;
@@ -110,8 +127,7 @@ function scroll() {
   }
   text.scrollTop += scrollChange;
 }
-
-//
+*/
 
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
@@ -148,8 +164,13 @@ function handleKeydown(e) {
   }
 }
 
+function handleResize(e) { // Is e needed?
+  scroll(); // Should this be any more efficient?
+}
+
 //
 
 window.addEventListener('keydown', handleKeydown, false);
 text.addEventListener('click', handleTextClick, false);
 buttons.addEventListener('click', handleButtonClick, false);
+window.addEventListener('resize', handleResize, false);  // Why no () in these?
