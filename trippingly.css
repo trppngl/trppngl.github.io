@@ -17,17 +17,21 @@ button {
   margin: 10px 0;
 }
 
-/*
-.current {
-  background-color: #fffbf1;
-}
-*/
-
 #highlight {
   position: absolute;
   width: 100%;
   background-color: #fffbf1;
   z-index: -1;
+}
+
+.fast {
+  transition: top 100ms, height 100ms;
+  transition-timing-function: ease;
+}
+
+.slow {
+  transition: top 300ms, height 300ms;
+  transition-timing-function: ease;
 }
 
 #text-pane {

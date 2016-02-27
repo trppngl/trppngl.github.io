@@ -39,11 +39,17 @@ function next() {
   }
 }
 
-// Condense/combine these next three?
+// Inelegant...
 
-function startSeg(targetIndex) {
+function startSeg(targetIndex, slow) {
   if (currentIndex != targetIndex) {
-    changeSeg(targetIndex);
+    currentIndex = targetIndex;
+    if (slow) {
+      highlight.className = 'slow';
+    } else {
+      highlight.className = 'fast';
+    }
+    highlighter();
   }
   audio.currentTime = times[currentIndex].start;
   if (audio.paused) {
@@ -51,29 +57,13 @@ function startSeg(targetIndex) {
   }
 }
 
-function changeSeg(targetIndex) {
-  currentIndex = targetIndex;
-  scroll();
-}
-
-function scroll() {
+function highlighter() {
   var segBox = segs[currentIndex].getBoundingClientRect();
   var segTop = segBox.top + text.scrollTop;
   var segHt = segBox.height;
-  var newStyle = 'top: ' + segTop + 'px; height: ' + segHt + 'px;'
-  highlight.style = newStyle;
+  var cssText = 'top: ' + segTop + 'px; height: ' + segHt + 'px;';
+  highlight.style = cssText;
 }
-
-/*
-function changeSeg(targetIndex) {
-  if (currentIndex >= 0) {
-    segs[currentIndex].classList.remove('current');
-  }
-  currentIndex = targetIndex;
-  segs[currentIndex].classList.add('current');
-  scroll();
-}
-*/
 
 function playAudio() {
   audio.play();
@@ -82,8 +72,8 @@ function playAudio() {
 
 function stopWatch() {
   if (audio.currentTime > times[currentIndex].stop) {
-    if (playAll === 1 && currentIndex < length - 1) { // Repeated in next()
-      next();
+    if (playAll === 1 && currentIndex < length - 1) {
+      startSeg(currentIndex + 1, 'slow'); // Inelegant
     } else {
       pauseAudio();
     }
@@ -113,21 +103,7 @@ function togglePlayButton() {
   }
 }
 
-/*
-function scroll() {
-  var segBox = segs[currentIndex].getBoundingClientRect();
-  var segTop = segBox.top;
-  var segBottom = segBox.bottom;
-  var viewBottom = text.getBoundingClientRect().bottom;
-  var scrollChange = 0;
-  if (segTop < 0) {
-    scrollChange = segTop;
-  } else if (segBottom > viewBottom) {
-    scrollChange = segBottom - viewBottom;
-  }
-  text.scrollTop += scrollChange;
-}
-*/
+//
 
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
@@ -164,13 +140,34 @@ function handleKeydown(e) {
   }
 }
 
-function handleResize(e) { // Is e needed?
-  scroll(); // Should this be any more efficient?
+function handleResize() {
+  if (currentIndex >= 0) {
+    highlight.className = '';
+    highlighter();
+  }
 }
 
 //
 
 window.addEventListener('keydown', handleKeydown, false);
+window.addEventListener('resize', handleResize, false);
 text.addEventListener('click', handleTextClick, false);
 buttons.addEventListener('click', handleButtonClick, false);
-window.addEventListener('resize', handleResize, false);  // Why no () in these?
+
+//
+
+/*
+function scroll() {
+  var segBox = segs[currentIndex].getBoundingClientRect();
+  var segTop = segBox.top;
+  var segBottom = segBox.bottom;
+  var viewBottom = text.getBoundingClientRect().bottom;
+  var scrollChange = 0;
+  if (segTop < 0) {
+    scrollChange = segTop;
+  } else if (segBottom > viewBottom) {
+    scrollChange = segBottom - viewBottom;
+  }
+  text.scrollTop += scrollChange;
+}
+*/
