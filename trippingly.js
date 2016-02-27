@@ -39,16 +39,10 @@ function next() {
   }
 }
 
-// Inelegant...
-
-function startSeg(targetIndex, slow) {
+function startSeg(targetIndex) {
   if (currentIndex != targetIndex) {
     currentIndex = targetIndex;
-    if (slow) {
-      highlight.className = 'slow';
-    } else {
-      highlight.className = 'fast';
-    }
+    highlight.className = 'slow';
     highlighter();
   }
   audio.currentTime = times[currentIndex].start;
@@ -73,7 +67,7 @@ function playAudio() {
 function stopWatch() {
   if (audio.currentTime > times[currentIndex].stop) {
     if (playAll === 1 && currentIndex < length - 1) {
-      startSeg(currentIndex + 1, 'slow'); // Inelegant
+      startSeg(currentIndex + 1); // This or next()?
     } else {
       pauseAudio();
     }
