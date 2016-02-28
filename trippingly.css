@@ -10,11 +10,6 @@ p {
   padding: 0.25em; /* 6px, look into this */
 }
 
-button {
-  font: 24px 'Linux Biolinum', sans;
-  margin: 10px 0;
-}
-
 #text-pane {
   margin: 0 auto;
   display: flex;
@@ -78,4 +73,9 @@ button {
   margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
   order: 0;
   flex-shrink: 0;
+}
+
+button {
+  font: 24px 'Linux Libertine', serif;
+  margin: 10px 0;
 }
