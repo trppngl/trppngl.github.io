@@ -38,7 +38,7 @@ p {
 #text {
   font: 24px 'Linux Libertine', serif;
   text-align: center;
-  order: 3;
+  order: 1;
   overflow: hidden;
   margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
   position: relative; /* So that #highlight can be absolute */
@@ -51,7 +51,7 @@ p {
   background-color: #eee;
   padding: 0 0.5em; /* Temporary */
   margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
-  order: 2;
+  order: 3;
   flex-shrink: 0;
 }
 
@@ -63,7 +63,7 @@ p {
   border-color: #eee;
   border-style: solid;
   background-color: #fafafa;
-  order: 1;
+  order: 2;
   overflow: hidden;
   margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
 }
