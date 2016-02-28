@@ -67,12 +67,14 @@ function playAudio() {
 function stopWatch() {
   if (audio.currentTime > times[currentIndex].stop) {
     if (playAll === 1 && currentIndex < length - 1) {
-      startSeg(currentIndex + 1); // This or next()?
+      next(); // Could call for slower transition here
     } else {
       pauseAudio();
     }
   }
 }
+
+// If I wanted two speeds for the highlight transition, the slower speed would happen when calling next() from stopWatch() or togglePlayAll(). Otherwise, the faster speed would happen. So calling next() from those two functions could pass some "slow" parameter or set the transition speed to slow in some other way. Not sure if it would be a 0/1 switch like playAll or what...
 
 function pauseAudio() {
   audio.pause();
@@ -82,7 +84,7 @@ function pauseAudio() {
 function togglePlayAll() {
   if (audio.paused) {
     playAll = 1;
-    next();
+    next(); // Could call for slower transition here
   } else {
     playAll ^= 1;
   }

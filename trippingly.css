@@ -17,6 +17,26 @@ button {
   margin: 10px 0;
 }
 
+#text-pane {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column-reverse;
+  max-width: 550px;
+  height: 100vh;
+}
+
+#buttons {
+  order: 1;
+  flex-shrink: 1;
+}
+
+#text {
+  order: 2;
+  flex-grow: 1;
+  overflow: auto;
+  position: relative; /* So that #highlight can be absolute */
+}
+
 #highlight {
   position: absolute;
   width: 100%;
@@ -32,24 +52,4 @@ button {
 .slow {
   transition: top 300ms, height 300ms;
   transition-timing-function: ease;
-}
-
-#text-pane {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column-reverse;
-  max-width: 550px;
-  height: 100vh;
-}
-
-#text {
-  order: 2;
-  flex-grow: 1;
-  overflow: auto;
-  position: relative;
-}
-
-#buttons {
-  order: 1;
-  flex-shrink: 1;
 }
