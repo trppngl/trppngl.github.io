@@ -64,6 +64,7 @@ p {
 
 #buttons {
   text-align: center;
+  background-color: #e5e5e5;
   order: 0;
   flex-shrink: 0;
 }
