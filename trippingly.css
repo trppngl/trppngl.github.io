@@ -45,7 +45,7 @@ button {
   text-align: center;
   order: 3;
   overflow: hidden;
-  margin: 0 13px 0 0; /* Temp to make up for scrollbars */
+  margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
   position: relative; /* So that #highlight can be absolute */
 }
 
@@ -55,7 +55,7 @@ button {
   color: #333;
   background-color: #eee;
   padding: 0 0.5em; /* Temporary */
-  margin: 0 13px 0 0; /* Temp to make up for scrollbars */
+  margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
   order: 2;
   flex-shrink: 0;
 }
@@ -70,12 +70,12 @@ button {
   background-color: #fafafa;
   order: 1;
   overflow: hidden;
-  margin: 0 13px 0 0; /* Temp to make up for scrollbars */
+  margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
 }
 
 #buttons {
   text-align: center;
-  margin: 0 13px 0 0; /* Temp to make up for scrollbars */
+  margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
   order: 0;
   flex-shrink: 0;
 }
