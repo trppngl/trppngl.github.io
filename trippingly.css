@@ -39,7 +39,7 @@ p {
   font: 24px 'Linux Libertine', serif;
   text-align: center;
   order: 3;
-  overflow: hidden;
+  overflow: auto;
   position: relative; /* So that #highlight can be absolute */
 }
 
@@ -59,7 +59,7 @@ p {
   padding: 0 10px 10px 10px; /* Temporary, look into this */
   background-color: #f5f5f5;
   order: 1;
-  overflow: hidden;
+  overflow: auto;
 }
 
 #buttons {
@@ -71,5 +71,6 @@ p {
 
 button {
   font: 24px 'Linux Libertine', serif;
-  margin: 10px 0;
+  margin: 6px 0;
+  background-color: #e5e5e5;
 }
