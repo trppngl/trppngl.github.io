@@ -1,7 +1,5 @@
 body {
-  font: 24px 'Linux Libertine', serif;
   color: #333333;
-  text-align: center;
   margin: 0;
   background-color: #ffffff;
 }
@@ -26,13 +24,24 @@ button {
 }
 
 #buttons {
+  text-align: center;
+  order: 0;
+  flex-shrink: 0;
+}
+
+#note-box {
+  font: 20px 'Linux Libertine', serif;
+  text-align: left;
+  padding: 0.5em; /* Temporary, look into this */
   order: 1;
-  flex-shrink: 1;
+  overflow: auto;
+  background-color: #fafafa;
 }
 
 #text {
+  font: 24px 'Linux Libertine', serif;
+  text-align: center;
   order: 2;
-  flex-grow: 1;
   overflow: auto;
   position: relative; /* So that #highlight can be absolute */
 }
