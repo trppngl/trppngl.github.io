@@ -38,7 +38,7 @@ p {
 #text {
   font: 24px 'Linux Libertine', serif;
   text-align: center;
-  order: 1;
+  order: 3;
   overflow: hidden;
   margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
   position: relative; /* So that #highlight can be absolute */
@@ -51,19 +51,19 @@ p {
   background-color: #eee;
   padding: 0 0.5em; /* Temporary */
   margin: 5px 5px 0 5px; /* Temp to make up for scrollbars */
-  order: 3;
+  order: 2;
   flex-shrink: 0;
 }
 
 #note-box {
   font: 20px 'Linux Libertine', serif;
   text-align: left;
-  padding: 0.5em; /* Temporary, look into this */
+  padding: 0 0.5em 0.5em 0.5em; /* Temporary, look into this */
   border-width: 0 2px 2px 2px;
   border-color: #eee;
   border-style: solid;
   background-color: #fafafa;
-  order: 2;
+  order: 1;
   overflow: hidden;
   margin: 0 5px 0 5px; /* Temp to make up for scrollbars */
 }
