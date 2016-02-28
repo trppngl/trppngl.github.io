@@ -1,7 +1,7 @@
 body {
-  color: #333333;
+  color: #333;
   margin: 0;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 
 p {
@@ -11,7 +11,7 @@ p {
 }
 
 button {
-  font: 24px 'Linux Libertine', serif;
+  font: 24px 'Linux Biolinum', sans;
   margin: 10px 0;
 }
 
@@ -21,29 +21,6 @@ button {
   flex-direction: column-reverse;
   max-width: 550px;
   height: 100vh;
-}
-
-#buttons {
-  text-align: center;
-  order: 0;
-  flex-shrink: 0;
-}
-
-#note-box {
-  font: 20px 'Linux Libertine', serif;
-  text-align: left;
-  padding: 0.5em; /* Temporary, look into this */
-  order: 1;
-  overflow: auto;
-  background-color: #fafafa;
-}
-
-#text {
-  font: 24px 'Linux Libertine', serif;
-  text-align: center;
-  order: 2;
-  overflow: auto;
-  position: relative; /* So that #highlight can be absolute */
 }
 
 #highlight {
@@ -61,4 +38,44 @@ button {
 .slow {
   transition: top 300ms, height 300ms;
   transition-timing-function: ease;
+}
+
+#text {
+  font: 24px 'Linux Libertine', serif;
+  text-align: center;
+  order: 3;
+  overflow: hidden;
+  margin: 0 13px 0 0; /* Temp to make up for scrollbars */
+  position: relative; /* So that #highlight can be absolute */
+}
+
+#note-box-header {
+  font: 22px 'Linux Biolinum', serif;
+  font-weight: bold;
+  color: #333;
+  background-color: #eee;
+  padding: 0 0.5em; /* Temporary */
+  margin: 0 13px 0 0; /* Temp to make up for scrollbars */
+  order: 2;
+  flex-shrink: 0;
+}
+
+#note-box {
+  font: 20px 'Linux Libertine', serif;
+  text-align: left;
+  padding: 0.5em; /* Temporary, look into this */
+  border-width: 0 2px 2px 2px;
+  border-color: #eee;
+  border-style: solid;
+  background-color: #fafafa;
+  order: 1;
+  overflow: hidden;
+  margin: 0 13px 0 0; /* Temp to make up for scrollbars */
+}
+
+#buttons {
+  text-align: center;
+  margin: 0 13px 0 0; /* Temp to make up for scrollbars */
+  order: 0;
+  flex-shrink: 0;
 }
