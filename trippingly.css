@@ -38,28 +38,27 @@ p {
 #text {
   font: 24px 'Linux Libertine', serif;
   text-align: center;
-  order: 3;
+  order: 1;
   overflow: auto;
   position: relative; /* So that #highlight can be absolute */
 }
 
-#note-box-header {
-  font: 22px 'Linux Libertine', serif;
-  font-weight: bold;
-  color: #444;
-  background-color: #f5f5f5;
-  padding: 2px 10px; /* Temporary */
-  order: 2;
-  flex-shrink: 0;
+.note-box {
+  text-align: left;
+  margin: 10px;
 }
 
-#note-box {
+.note-header {
+  font: 22px 'Linux Libertine', serif;
+  font-weight: bold;
+  background-color: #f5f5f5;
+  padding: 0 10px;
+}
+
+.note-text {
   font: 20px 'Linux Libertine', serif;
-  text-align: left;
-  padding: 0 10px 10px 10px; /* Temporary, look into this */
   background-color: #fafafa;
-  order: 1;
-  overflow: auto;
+  padding: 0 10px 10px 10px;
 }
 
 #buttons {
