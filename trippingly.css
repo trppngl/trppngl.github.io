@@ -23,14 +23,6 @@ p {
   width: 100%;
   background-color: #fffbf1;
   z-index: -1;
-}
-
-.fast {
-  transition: top 100ms, height 100ms;
-  transition-timing-function: ease;
-}
-
-.slow {
   transition: top 300ms, height 300ms;
   transition-timing-function: ease;
 }
@@ -45,7 +37,6 @@ p {
 
 .note-box {
   text-align: left;
-  margin: 10px;
 }
 
 .note-header {
