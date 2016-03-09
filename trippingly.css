@@ -23,6 +23,9 @@ p {
   width: 100%;
   background-color: #fffbf1;
   z-index: -1;
+}
+
+.slow {
   transition: top 300ms, height 300ms;
   transition-timing-function: ease;
 }
@@ -37,18 +40,19 @@ p {
 
 .note-box {
   text-align: left;
+  margin: 10px;
 }
 
 .note-header {
   font: 22px 'Linux Libertine', serif;
   font-weight: bold;
-  background-color: #f3f3f3;
+  background-color: #f3f3f3; /* #f5f5f5 */
   padding: 0 10px;
 }
 
 .note-text {
   font: 20px 'Linux Libertine', serif;
-  background-color: #f9f9f9;
+  background-color: #f9f9f9; /* #fafafa */
   padding: 0 10px 10px 10px;
 }
 

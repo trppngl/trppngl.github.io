@@ -42,6 +42,7 @@ function next() {
 function startSeg(targetIndex) {
   if (currentIndex != targetIndex) {
     currentIndex = targetIndex;
+    highlight.className = 'slow'; // Move highlight with slow transition
     highlighter();
   }
   audio.currentTime = times[currentIndex].start;
@@ -135,7 +136,7 @@ function handleKeydown(e) {
 
 function handleResize() {
   if (currentIndex >= 0) {
-    highlight.className = '';
+    highlight.className = ''; // On resize, move highlight without transition
     highlighter();
   }
 }
