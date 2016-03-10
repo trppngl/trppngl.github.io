@@ -3,6 +3,7 @@ var highlight = document.getElementById('highlight');
 var text = document.getElementById('text');
 var buttons = document.getElementById('buttons');
 var playButton = document.getElementById('play');
+var note = document.getElementById('test-note'); // Temp
 
 var segs = [];
 segs.push.apply(segs, document.getElementsByClassName('seg'));
@@ -42,7 +43,7 @@ function next() {
 function startSeg(targetIndex) {
   if (currentIndex != targetIndex) {
     currentIndex = targetIndex;
-    highlight.className = 'slow'; // Move highlight with slow transition
+    highlight.className = 'slow'; // Slow highlight transition if not resizing
     highlighter();
   }
   audio.currentTime = times[currentIndex].start;
@@ -97,10 +98,23 @@ function togglePlayButton() {
   }
 }
 
+// Temp
+
+function testLink() {
+  if (note.style.height != '0px') {
+    note.style = 'height: 0px; opacity: 0;';
+  } else {
+    note.style = 'height: 154px; opacity: 100;';
+  }
+  handleResize();
+}
+
 //
 
-function handleTextClick(e) {
-  if (e.target.classList.contains('seg')) {
+function handleTextClick(e) { // 1st part temp
+  if (e.target.classList.contains('testlink')) {
+    testLink();
+  } else if (e.target.classList.contains('seg')) {
     startSeg(Number(e.target.getAttribute('id')));
   }
 }
@@ -136,7 +150,7 @@ function handleKeydown(e) {
 
 function handleResize() {
   if (currentIndex >= 0) {
-    highlight.className = ''; // On resize, move highlight without transition
+    highlight.className = ''; // No highlight transition if resizing
     highlighter();
   }
 }
