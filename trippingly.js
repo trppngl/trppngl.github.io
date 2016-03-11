@@ -102,9 +102,9 @@ function togglePlayButton() {
 
 function testLink() {
   if (note.style.height != '0px') {
-    note.style = 'height: 0px; opacity: 0;';
+    note.style = 'height: 0px; opacity: 100;';
   } else {
-    note.style = 'height: 154px; opacity: 100;';
+    note.style = 'height: 150px; opacity: 100;';
   }
   handleResize();
 }

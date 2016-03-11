@@ -49,7 +49,7 @@ p {
 
 .note-box {
   text-align: left;
-  transition: top 600ms, height 600ms, opacity 600ms;
+  transition: top 0ms, height 300ms, opacity 600ms;
   transition-timing-function: ease;
   overflow: hidden;
   opacity: 0;
@@ -65,7 +65,7 @@ p {
 
 .note-text {
   font: 20px 'Linux Libertine', serif;
-  background-color: #f9f9f9; /* #fafafa */
+  background-color: #fafafa;
   padding: 0 10px 10px 10px;
 }
 
