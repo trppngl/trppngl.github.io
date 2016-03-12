@@ -3,7 +3,6 @@ var highlight = document.getElementById('highlight');
 var text = document.getElementById('text');
 var buttons = document.getElementById('buttons');
 var playButton = document.getElementById('play');
-var note = document.getElementById('test-note'); // Temp
 
 var segs = [];
 segs.push.apply(segs, document.getElementsByClassName('seg'));
@@ -43,7 +42,7 @@ function next() {
 function startSeg(targetIndex) {
   if (currentIndex != targetIndex) {
     currentIndex = targetIndex;
-    highlight.className = 'slow'; // Slow highlight transition if not resizing
+    highlight.className = 'slow'; // Move highlight with slow transition
     highlighter();
   }
   audio.currentTime = times[currentIndex].start;
@@ -98,23 +97,10 @@ function togglePlayButton() {
   }
 }
 
-// Temp
-
-function testLink() {
-  if (note.style.height != '0px') {
-    note.style = 'height: 0px; opacity: 100;';
-  } else {
-    note.style = 'height: 150px; opacity: 100;';
-  }
-  handleResize();
-}
-
 //
 
-function handleTextClick(e) { // 1st part temp
-  if (e.target.classList.contains('testlink')) {
-    testLink();
-  } else if (e.target.classList.contains('seg')) {
+function handleTextClick(e) {
+  if (e.target.classList.contains('seg')) {
     startSeg(Number(e.target.getAttribute('id')));
   }
 }
@@ -150,7 +136,7 @@ function handleKeydown(e) {
 
 function handleResize() {
   if (currentIndex >= 0) {
-    highlight.className = ''; // No highlight transition if resizing
+    highlight.className = ''; // On resize, move highlight without transition
     highlighter();
   }
 }
@@ -161,21 +147,3 @@ window.addEventListener('keydown', handleKeydown, false);
 window.addEventListener('resize', handleResize, false);
 text.addEventListener('click', handleTextClick, false);
 buttons.addEventListener('click', handleButtonClick, false);
-
-//
-
-/*
-function scroll() {
-  var segBox = segs[currentIndex].getBoundingClientRect();
-  var segTop = segBox.top;
-  var segBottom = segBox.bottom;
-  var viewBottom = text.getBoundingClientRect().bottom;
-  var scrollChange = 0;
-  if (segTop < 0) {
-    scrollChange = segTop;
-  } else if (segBottom > viewBottom) {
-    scrollChange = segBottom - viewBottom;
-  }
-  text.scrollTop += scrollChange;
-}
-*/

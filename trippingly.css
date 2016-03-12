@@ -10,11 +10,6 @@ p {
   padding: 0.25em; /* 6px, look into this */
 }
 
-.seg {
-  overflow: hidden;
-  height: 36px;
-}
-
 #text-pane {
   margin: 0 auto;
   display: flex;
@@ -43,17 +38,9 @@ p {
   position: relative; /* So that #highlight can be absolute */
 }
 
-.testlink {
-  color: #777;
-}
-
 .note-box {
   text-align: left;
-  transition: top 0ms, height 300ms, opacity 600ms;
-  transition-timing-function: ease;
-  overflow: hidden;
-  opacity: 0;
-  height: 0;
+  margin: 10px;
 }
 
 .note-header {
@@ -65,7 +52,7 @@ p {
 
 .note-text {
   font: 20px 'Linux Libertine', serif;
-  background-color: #fafafa;
+  background-color: #f9f9f9; /* #fafafa */
   padding: 0 10px 10px 10px;
 }
 
