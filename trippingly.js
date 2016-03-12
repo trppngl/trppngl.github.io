@@ -21,6 +21,7 @@ for (i = 0; i < length; i++) {
 
 var currentIndex = -1;
 var playAll = 0;
+var links;
 
 //
 
@@ -99,6 +100,21 @@ function togglePlayButton() {
 
 //
 
+function toggleLinks(input) {
+  if (links === input) {
+    links = undefined;
+    segs[0].innerHTML = 'She had your dark suit';
+    segs[3].innerHTML = 'Où est le métro Saint-Michel?'
+  } else {
+    links = input;
+    segs[0].innerHTML = 'She <a href="#6" class="p">had your</a> dark suit';
+    segs[3].innerHTML = 'Où est le <a href="#7" class="g">métro</a> Saint-Michel?';
+    }
+  console.log(links);
+}
+
+//
+
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
     startSeg(Number(e.target.getAttribute('id')));
@@ -116,6 +132,15 @@ function handleButtonClick(e) {
     case 'play':
       togglePlayAll();
       break;
+    case 'vocab':
+      toggleLinks('v');
+      break;
+    case 'pron':
+      toggleLinks('p');
+      break;
+    case 'gram':
+      toggleLinks('g');
+      break;
   }
 }
 
@@ -130,6 +155,15 @@ function handleKeydown(e) {
     case 32:
       e.preventDefault(); // So browser doesn't jump to bottom
       togglePlayAll();
+      break;
+    case 86:
+      toggleLinks('v');
+      break;
+    case 80:
+      toggleLinks('p');
+      break;
+    case 71:
+      toggleLinks('g');
       break;
   }
 }

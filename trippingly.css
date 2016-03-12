@@ -49,20 +49,14 @@ button {
   margin: 6px 0;
 }
 
-.no-link {
+a.v {
 
 }
 
-.v-link {
-  display: none;
-  color: red;
+a.p {
+  color: gray;
 }
 
-.p-link {
-  display: none;
+a.g {
   color: blue;
-}
-
-.g-link {
-  display: none;
 }
