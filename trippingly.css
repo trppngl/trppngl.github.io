@@ -48,3 +48,21 @@ button {
   font: 24px 'Linux Libertine', serif;
   margin: 6px 0;
 }
+
+.no-link {
+
+}
+
+.v-link {
+  display: none;
+  color: red;
+}
+
+.p-link {
+  display: none;
+  color: blue;
+}
+
+.g-link {
+  display: none;
+}
