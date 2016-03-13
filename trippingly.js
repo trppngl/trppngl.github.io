@@ -100,7 +100,7 @@ function togglePlayButton() {
   }
 }
 
-//
+// Improve?
 
 function toggleLinks(input) {
   if (linkMode === input) {
@@ -111,6 +111,8 @@ function toggleLinks(input) {
   for (i = 0; i < length; i++) {
     if (segData[i][linkMode]) {
       segs[i].innerHTML = segData[i][linkMode];
+    } else if (segs[i].innerHTML != segData[i]['plain']) {
+      segs[i].innerHTML = segData[i]['plain'];
     }
   }
   console.log(linkMode);
