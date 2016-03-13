@@ -102,17 +102,20 @@ function togglePlayButton() {
 
 // Improve?
 
-function toggleLinks(input) {
+function toggleLinkMode(input) {
   if (linkMode === input) {
     linkMode = 'plain';
+    for (i = 0; i < length; i++) {
+      segs[i].innerHTML = segData[i]['plain'];
+    }
   } else {
     linkMode = input;
-  }
-  for (i = 0; i < length; i++) {
-    if (segData[i][linkMode]) {
-      segs[i].innerHTML = segData[i][linkMode];
-    } else if (segs[i].innerHTML != segData[i]['plain']) {
-      segs[i].innerHTML = segData[i]['plain'];
+    for (i = 0; i < length; i++) {
+      if (segData[i][linkMode]) {
+        segs[i].innerHTML = segData[i][linkMode];
+      } else if (segs[i].innerHTML != segData[i]['plain']) {
+        segs[i].innerHTML = segData[i]['plain'];
+      }
     }
   }
   console.log(linkMode);
@@ -138,13 +141,13 @@ function handleButtonClick(e) {
       togglePlayAll();
       break;
     case 'vocab':
-      toggleLinks('v');
+      toggleLinkMode('v');
       break;
     case 'pron':
-      toggleLinks('p');
+      toggleLinkMode('p');
       break;
     case 'gram':
-      toggleLinks('g');
+      toggleLinkMode('g');
       break;
   }
 }
@@ -162,13 +165,13 @@ function handleKeydown(e) {
       togglePlayAll();
       break;
     case 86:
-      toggleLinks('v');
+      toggleLinkMode('v');
       break;
     case 80:
-      toggleLinks('p');
+      toggleLinkMode('p');
       break;
     case 71:
-      toggleLinks('g');
+      toggleLinkMode('g');
       break;
   }
 }
