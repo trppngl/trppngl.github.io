@@ -9,24 +9,26 @@ segs.push.apply(segs, document.getElementsByClassName('seg'));
 
 var length = segs.length;
 
-var times = [];
+var segData = [];
 for (i = 0; i < length; i++) {
-  var start = Number(segs[i].getAttribute('data-start'));
-  var stop = Number(segs[i].getAttribute('data-stop'));
-  times.push({
-    'start': start,
-    'stop': stop
+  segData.push({
+    'start': Number(segs[i].getAttribute('data-start')),
+    'stop': Number(segs[i].getAttribute('data-stop')),
+    'plain': segs[i].textContent,
+    'v': segs[i].getAttribute('data-v'),
+    'p': segs[i].getAttribute('data-p'),
+    'g': segs[i].getAttribute('data-g')
   });
 }
 
 var currentIndex = -1;
 var playAll = 0;
-var links;
+var linkMode = 'plain';
 
 //
 
 function prev() {
-  var threshold = times[currentIndex].start + 0.5; // Up from 0.2 b/c 300ms gap
+  var threshold = segData[currentIndex].start + 0.5; // Was 0.2 but 300ms gap
   if (audio.currentTime > threshold) {
     startSeg(currentIndex);
   } else if (currentIndex > 0) {
@@ -46,7 +48,7 @@ function startSeg(targetIndex) {
     highlight.className = 'slow'; // Move highlight with slow transition
     highlighter();
   }
-  audio.currentTime = times[currentIndex].start;
+  audio.currentTime = segData[currentIndex].start;
   if (audio.paused) {
     playAudio();
   }
@@ -66,7 +68,7 @@ function playAudio() {
 }
 
 function stopWatch() {
-  if (audio.currentTime > times[currentIndex].stop) {
+  if (audio.currentTime > segData[currentIndex].stop) {
     if (playAll === 1 && currentIndex < length - 1) {
       next();
     } else {
@@ -101,16 +103,17 @@ function togglePlayButton() {
 //
 
 function toggleLinks(input) {
-  if (links === input) {
-    links = undefined;
-    segs[0].innerHTML = 'She had your dark suit';
-    segs[3].innerHTML = 'Où est le métro Saint-Michel?'
+  if (linkMode === input) {
+    linkMode = 'plain';
   } else {
-    links = input;
-    segs[0].innerHTML = 'She <a href="#6" class="p">had your</a> dark suit';
-    segs[3].innerHTML = 'Où est le <a href="#7" class="g">métro</a> Saint-Michel?';
+    linkMode = input;
+  }
+  for (i = 0; i < length; i++) {
+    if (segData[i][linkMode]) {
+      segs[i].innerHTML = segData[i][linkMode];
     }
-  console.log(links);
+  }
+  console.log(linkMode);
 }
 
 //
