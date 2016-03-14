@@ -48,3 +48,12 @@ button {
   font: 24px 'Linux Libertine', serif;
   margin: 6px 0;
 }
+
+div.testing {
+  display: none;
+  background-color: #f7f7f7;
+}
+
+div:target {
+  display: block;
+}
