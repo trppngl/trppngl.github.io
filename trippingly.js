@@ -100,9 +100,10 @@ function togglePlayButton() {
   }
 }
 
-// Improve?
+//
 
 function toggleLinkMode(input) {
+  window.location.hash = '';
   if (linkMode === input) {
     linkMode = 'plain';
     for (i = 0; i < length; i++) {
