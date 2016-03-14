@@ -127,6 +127,9 @@ function toggleLinkMode(input) {
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
     startSeg(Number(e.target.getAttribute('id')));
+  } else if (e.target.getAttribute('href') === window.location.hash) {
+    e.preventDefault();
+    window.location.hash = '';
   }
 }
 
