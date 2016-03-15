@@ -21,17 +21,21 @@ for (i = 0; i < length; i++) {
   });
 }
 
+/*
 if (window.location.hash) {
   var linkMode = document.getElementById(window.location.hash.substring(1)).className;
 } else {
   var linkMode = 'plain';
 }
+*/
 
 var currentIndex = -1;
 var playAll = 0;
 
 var linkMode;
-getLinkModeFromNote();
+var currentNote;
+
+//getLinkModeFromNote();
 
 //
 
@@ -110,27 +114,17 @@ function togglePlayButton() {
 
 //
 
-function getLinkModeFromNote() {
-  console.log('checking if note showing')
-  if (window.location.hash) {
-    linkMode = document.getElementById(window.location.hash.substring(1)).className;
-    console.log('note showing, calling writeSegs()');
-    writeSegs();
-  }
-}
-
 function toggleLinkMode(input) {
-  window.location.hash = ''; // Hide note if one is showing
+  hideCurrentNote();
   if (linkMode === input) {
     linkMode = 'plain';
   } else {
     linkMode = input;
   }
-  console.log('linkMode toggled, calling writeSegs()');
   writeSegs();
 }
 
-function writeSegs() { // Works if linkMode = plain, but inelegant?
+function writeSegs() {
   for (i = 0; i < length; i++) {
     if (segData[i][linkMode]) {
       segs[i].innerHTML = segData[i][linkMode];
@@ -140,20 +134,47 @@ function writeSegs() { // Works if linkMode = plain, but inelegant?
   }
 }
 
+/*
+function getLinkModeFromNote() {
+  console.log('checking if note showing')
+  if (window.location.hash) {
+    linkMode = document.getElementById(window.location.hash.substring(1)).className;
+    console.log('note showing, calling writeSegs()');
+    writeSegs();
+  }
+}
+*/
+
+//
+
+function toggleNote(ref) {
+  if (currentNote === ref) {
+    hideCurrentNote();
+    currentNote = null;
+  } else {
+    hideCurrentNote();
+    currentNote = ref;
+    showCurrentNote();
+  }
+}
+
+function hideCurrentNote() {
+  if (currentNote) {
+    document.getElementById(currentNote).classList.remove('show');
+  }
+}
+
+function showCurrentNote() {
+  document.getElementById(currentNote).classList.add('show');
+}
+
 //
 
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
     startSeg(Number(e.target.getAttribute('id')));
-  } else if (e.target.tagName.toLowerCase() === 'a') {
-    handleLinkClick(e);
-  }
-}
-
-function handleLinkClick(e) {
-  if (e.target.getAttribute('href') === window.location.hash) {
-    e.preventDefault();
-    window.location.hash = '';
+  } else if (e.target.tagName.toLowerCase() === 'span') { // Other spans?
+    toggleNote(e.target.getAttribute('data-ref'));
   }
 }
 
@@ -218,6 +239,6 @@ window.addEventListener('resize', handleResize, false);
 text.addEventListener('click', handleTextClick, false);
 buttons.addEventListener('click', handleButtonClick, false);
 
-//
+// ???
 
 window.addEventListener('hashchange', getLinkModeFromNote, false);

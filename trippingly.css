@@ -64,6 +64,24 @@ div.g {
   background-color: #f7f7f7;
 }
 
+span {
+  color: blue;
+  cursor: pointer;
+}
+
+span.v {
+}
+
+span.p {
+}
+
+span.g {
+}
+
 div:target {
+  display: block;
+}
+
+div.show {
   display: block;
 }
