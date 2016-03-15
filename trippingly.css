@@ -49,7 +49,17 @@ button {
   margin: 6px 0;
 }
 
-div.testing {
+div.v {
+  display: none;
+  background-color: #f7f7f7;
+}
+
+div.p {
+  display: none;
+  background-color: #f7f7f7;
+}
+
+div.g {
   display: none;
   background-color: #f7f7f7;
 }

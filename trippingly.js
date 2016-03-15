@@ -21,9 +21,17 @@ for (i = 0; i < length; i++) {
   });
 }
 
+if (window.location.hash) {
+  var linkMode = document.getElementById(window.location.hash.substring(1)).className;
+} else {
+  var linkMode = 'plain';
+}
+
 var currentIndex = -1;
 var playAll = 0;
-var linkMode = 'plain';
+
+var linkMode;
+GetLinkModeFromHash();
 
 //
 
@@ -102,24 +110,31 @@ function togglePlayButton() {
 
 //
 
+function GetLinkModeFromHash() {
+  if (window.location.hash) {
+    linkMode = document.getElementById(window.location.hash.substring(1)).className;
+    setLinkMode();
+  }
+}
+
 function toggleLinkMode(input) {
-  window.location.hash = '';
+  window.location.hash = ''; // Must trigger hashchange handler. OK?
   if (linkMode === input) {
     linkMode = 'plain';
-    for (i = 0; i < length; i++) {
-      segs[i].innerHTML = segData[i]['plain'];
-    }
   } else {
     linkMode = input;
-    for (i = 0; i < length; i++) {
-      if (segData[i][linkMode]) {
-        segs[i].innerHTML = segData[i][linkMode];
-      } else if (segs[i].innerHTML != segData[i]['plain']) {
-        segs[i].innerHTML = segData[i]['plain'];
-      }
+  }
+  setLinkMode();
+}
+
+function setLinkMode() {
+  for (i = 0; i < length; i++) {
+    if (segData[i][linkMode]) {
+      segs[i].innerHTML = segData[i][linkMode];
+    } else {
+      segs[i].innerHTML = segData[i]['plain'];
     }
   }
-  console.log(linkMode);
 }
 
 //
@@ -127,7 +142,13 @@ function toggleLinkMode(input) {
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
     startSeg(Number(e.target.getAttribute('id')));
-  } else if (e.target.getAttribute('href') === window.location.hash) {
+  } else if (e.target.tagName.toLowerCase() === 'a') {
+    handleLinkClick(e);
+  }
+}
+
+function handleLinkClick(e) {
+  if (e.target.getAttribute('href') === window.location.hash) {
     e.preventDefault();
     window.location.hash = '';
   }
@@ -193,3 +214,7 @@ window.addEventListener('keydown', handleKeydown, false);
 window.addEventListener('resize', handleResize, false);
 text.addEventListener('click', handleTextClick, false);
 buttons.addEventListener('click', handleButtonClick, false);
+
+//
+
+window.addEventListener('hashchange', GetLinkModeFromHash, false);
