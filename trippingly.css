@@ -78,10 +78,6 @@ span.p {
 span.g {
 }
 
-div:target {
-  display: block;
-}
-
 div.show {
   display: block;
 }

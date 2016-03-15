@@ -21,21 +21,13 @@ for (i = 0; i < length; i++) {
   });
 }
 
-/*
-if (window.location.hash) {
-  var linkMode = document.getElementById(window.location.hash.substring(1)).className;
-} else {
-  var linkMode = 'plain';
-}
-*/
-
 var currentIndex = -1;
 var playAll = 0;
 
 var linkMode;
 var currentNote;
 
-//getLinkModeFromNote();
+hashNote();
 
 //
 
@@ -134,17 +126,6 @@ function writeSegs() {
   }
 }
 
-/*
-function getLinkModeFromNote() {
-  console.log('checking if note showing')
-  if (window.location.hash) {
-    linkMode = document.getElementById(window.location.hash.substring(1)).className;
-    console.log('note showing, calling writeSegs()');
-    writeSegs();
-  }
-}
-*/
-
 //
 
 function toggleNote(ref) {
@@ -166,6 +147,19 @@ function hideCurrentNote() {
 
 function showCurrentNote() {
   document.getElementById(currentNote).classList.add('show');
+}
+
+/* Works well, but jumps when typing hash for note that is already showing. Maybe no way around that. No jump otherwise. */
+
+function hashNote() {
+  if (window.location.hash) {
+    hideCurrentNote();
+    currentNote = window.location.hash.substring(1);
+    linkMode = document.getElementById(currentNote).className;
+    showCurrentNote();
+    writeSegs();
+  }
+  window.history.replaceState(null, null, '/');
 }
 
 //
@@ -236,9 +230,7 @@ function handleResize() {
 
 window.addEventListener('keydown', handleKeydown, false);
 window.addEventListener('resize', handleResize, false);
+window.addEventListener('hashchange', hashNote, false);
+
 text.addEventListener('click', handleTextClick, false);
 buttons.addEventListener('click', handleButtonClick, false);
-
-// ???
-
-window.addEventListener('hashchange', getLinkModeFromNote, false);
