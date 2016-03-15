@@ -31,7 +31,7 @@ var currentIndex = -1;
 var playAll = 0;
 
 var linkMode;
-GetLinkModeFromHash();
+getLinkModeFromNote();
 
 //
 
@@ -110,24 +110,27 @@ function togglePlayButton() {
 
 //
 
-function GetLinkModeFromHash() {
+function getLinkModeFromNote() {
+  console.log('checking if note showing')
   if (window.location.hash) {
     linkMode = document.getElementById(window.location.hash.substring(1)).className;
-    setLinkMode();
+    console.log('note showing, calling writeSegs()');
+    writeSegs();
   }
 }
 
 function toggleLinkMode(input) {
-  window.location.hash = ''; // Must trigger hashchange handler. OK?
+  window.location.hash = ''; // Hide note if one is showing
   if (linkMode === input) {
     linkMode = 'plain';
   } else {
     linkMode = input;
   }
-  setLinkMode();
+  console.log('linkMode toggled, calling writeSegs()');
+  writeSegs();
 }
 
-function setLinkMode() {
+function writeSegs() { // Works if linkMode = plain, but inelegant?
   for (i = 0; i < length; i++) {
     if (segData[i][linkMode]) {
       segs[i].innerHTML = segData[i][linkMode];
@@ -217,4 +220,4 @@ buttons.addEventListener('click', handleButtonClick, false);
 
 //
 
-window.addEventListener('hashchange', GetLinkModeFromHash, false);
+window.addEventListener('hashchange', getLinkModeFromNote, false);
