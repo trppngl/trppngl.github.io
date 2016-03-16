@@ -143,13 +143,13 @@ function hideCurrentNote() {
   if (currentNote) {
     document.getElementById(currentNote).classList.remove('show');
   }
+  handleResize();
 }
 
 function showCurrentNote() {
   document.getElementById(currentNote).classList.add('show');
+  handleResize();
 }
-
-/* Works well, but jumps when typing hash for note that is already showing. Maybe no way around that. No jump otherwise. */
 
 function hashNote() {
   if (window.location.hash) {
@@ -161,6 +161,8 @@ function hashNote() {
   }
   window.history.replaceState(null, null, '/');
 }
+
+/* Works well, but jumps when typing hash for note that is already showing. Maybe no way around that. No jump otherwise. Down the road, should scroll. */
 
 //
 
