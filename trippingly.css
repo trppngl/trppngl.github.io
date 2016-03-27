@@ -50,17 +50,14 @@ button {
 }
 
 div.v {
-  display: none;
   background-color: #f7f7f7;
 }
 
 div.p {
-  display: none;
   background-color: #f7f7f7;
 }
 
 div.g {
-  display: none;
   background-color: #f7f7f7;
 }
 
@@ -78,6 +75,9 @@ span.p {
 span.g {
 }
 
-div.show {
-  display: block;
+.hide {
+  height: 0;
+  overflow: hidden;
+  transition: height 300ms;
+  transition-timing-function: ease;
 }
