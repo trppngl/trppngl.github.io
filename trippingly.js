@@ -21,13 +21,15 @@ for (i = 0; i < length; i++) {
   });
 }
 
+// Maybe an associative array of all the notes
+
 var currentIndex = -1;
 var playAll = 0;
 
-var linkMode;
-var currentNote;
+var linkMode = 'plain';
+var currentNote = null;
 
-hashNote();
+// hashNote();
 
 //
 
@@ -107,7 +109,7 @@ function togglePlayButton() {
 //
 
 function toggleLinkMode(input) {
-  hideCurrentNote();
+  showNote(null);
   if (linkMode === input) {
     linkMode = 'plain';
   } else {
@@ -128,41 +130,58 @@ function writeSegs() {
 
 //
 
-function toggleNote(ref) {
-  if (currentNote === ref) {
-    hideCurrentNote();
-    currentNote = null;
+function toggleNote(targetNote) {
+  if (currentNote === targetNote) {
+    showNote(null);
   } else {
-    hideCurrentNote();
-    currentNote = ref;
-    showCurrentNote();
+    showNote(targetNote);
   }
 }
 
-function hideCurrentNote() {
+function showNote(targetNote) {
+  scrollDiff = getScrollDiff(targetNote);
   if (currentNote) {
-    document.getElementById(currentNote).classList.remove('show');
+    document.getElementById(currentNote).parentNode.classList.add('hide'); //
   }
-  handleResize();
-}
-
-function showCurrentNote() {
-  document.getElementById(currentNote).classList.add('show');
-  handleResize();
-}
-
-function hashNote() {
-  if (window.location.hash) {
-    hideCurrentNote();
-    currentNote = window.location.hash.substring(1);
-    linkMode = document.getElementById(currentNote).className;
-    showCurrentNote();
-    writeSegs();
+  if (targetNote) {
+    document.getElementById(targetNote).parentNode.classList.remove('hide'); //
   }
-  window.history.replaceState(null, null, '/');
+  text.scrollTop += scrollDiff;
+  console.log(scrollDiff);
+  jumpHighlight();
+  currentNote = targetNote;
 }
 
-/* Works well, but jumps when typing hash for note that is already showing. Maybe no way around that. No jump otherwise. Down the road, should scroll. */
+function getScrollDiff(targetNote) {
+  if (targetNote) {
+    var targetNoteBox = document.getElementById(targetNote).getBoundingClientRect();
+    var targetNoteOrigin = targetNoteBox.top;
+    var targetNoteHt = targetNoteBox.height;
+    if (targetNoteHt > targetNoteOrigin) {
+      console.log('targetNoteHt ' + targetNoteHt + ' > targetNoteOrigin ' + targetNoteOrigin);
+      return targetNoteOrigin;
+    }
+  } else {
+    var targetNoteOrigin = null;
+    var targetNoteHt = null;
+  }
+  if (currentNote) {
+    var currentNoteBox = document.getElementById(currentNote).getBoundingClientRect();
+    var currentNoteOrigin = currentNoteBox.top;
+    if (targetNoteOrigin && targetNoteOrigin < currentNoteOrigin) {
+      console.log ('currentNoteOrigin ' + currentNoteOrigin + ' > targetNoteOrigin ' + targetNoteOrigin);
+      var currentNoteHt = null;
+    } else {
+      var currentNoteHt = currentNoteBox.height;
+    }
+  } else {
+    var currentNoteHt = null;
+  }
+  console.log('targetNoteHt ' + targetNoteHt + ' - currentNoteHt ' + currentNoteHt);
+  return targetNoteHt - currentNoteHt;
+}
+
+// Closing note when scrolled to bottom of window jumps up.
 
 //
 
@@ -170,7 +189,7 @@ function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
     startSeg(Number(e.target.getAttribute('id')));
   } else if (e.target.tagName.toLowerCase() === 'span') { // Other spans?
-    toggleNote(e.target.getAttribute('data-ref'));
+    toggleNote(e.target.getAttribute('data-note'));
   }
 }
 
@@ -221,9 +240,9 @@ function handleKeydown(e) {
   }
 }
 
-function handleResize() {
+function jumpHighlight() {
   if (currentIndex >= 0) {
-    highlight.className = ''; // On resize, move highlight without transition
+    highlight.className = '';
     highlighter();
   }
 }
@@ -231,8 +250,8 @@ function handleResize() {
 //
 
 window.addEventListener('keydown', handleKeydown, false);
-window.addEventListener('resize', handleResize, false);
-window.addEventListener('hashchange', hashNote, false);
+window.addEventListener('resize', jumpHighlight, false);
+// window.addEventListener('hashchange', hashNote, false);
 
 text.addEventListener('click', handleTextClick, false);
 buttons.addEventListener('click', handleButtonClick, false);
