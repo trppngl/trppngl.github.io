@@ -158,8 +158,7 @@ function getScrollDiff(targetNote) {
     var targetNoteOrigin = targetNoteBox.top;
     var targetNoteHt = targetNoteBox.height;
     if (targetNoteHt > targetNoteOrigin) {
-      console.log('targetNoteHt ' + targetNoteHt + ' > targetNoteOrigin ' + targetNoteOrigin);
-      return targetNoteOrigin;
+      return targetNoteOrigin; // Stop note from opening above top of window
     }
   } else {
     var targetNoteOrigin = null;
@@ -169,7 +168,9 @@ function getScrollDiff(targetNote) {
     var currentNoteBox = document.getElementById(currentNote).getBoundingClientRect();
     var currentNoteOrigin = currentNoteBox.top;
     if (targetNoteOrigin && targetNoteOrigin < currentNoteOrigin) {
-      console.log ('currentNoteOrigin ' + currentNoteOrigin + ' > targetNoteOrigin ' + targetNoteOrigin);
+
+    // If current note is below target note, it shouldn't enter into the calculations, so it's set to zero.
+
       var currentNoteHt = null;
     } else {
       var currentNoteHt = currentNoteBox.height;
@@ -177,11 +178,11 @@ function getScrollDiff(targetNote) {
   } else {
     var currentNoteHt = null;
   }
-  console.log('targetNoteHt ' + targetNoteHt + ' - currentNoteHt ' + currentNoteHt);
   noteHtDiff = targetNoteHt - currentNoteHt;
 
+  // When scrolled close to or at bottom of window, scrollTop needs less or no correction. This accounts for that.
+
   scrollBottom = text.scrollTopMax - text.scrollTop;
-  console.log('scrollBottom ' + scrollBottom);
   if (scrollBottom + noteHtDiff < 0) {
     noteHtDiff = -scrollBottom;
   }
