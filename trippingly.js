@@ -27,7 +27,7 @@ var currentIndex = -1;
 var playAll = 0;
 
 var linkMode = 'plain';
-var currentNote = null;
+var currentNoteId = null;
 
 // hashNote();
 
@@ -130,73 +130,62 @@ function writeSegs() {
 
 //
 
-function toggleNote(targetNote) {
-  if (currentNote === targetNote) {
+function toggleNote(targetNoteId) {
+  if (currentNoteId === targetNoteId) {
     showNote(null);
   } else {
-    showNote(targetNote);
+    showNote(targetNoteId);
   }
 }
 
-function showNote(targetNote) {
-  scrollDiff = getScrollDiff(targetNote);
-  if (currentNote) {
-    document.getElementById(currentNote).parentNode.classList.add('hide'); //
+function showNote(targetNoteId) {
+  scrollDiff = getScrollDiff(targetNoteId);
+  if (currentNoteId) {
+    document.getElementById(currentNoteId).parentNode.classList.add('hide'); //
   }
-  if (targetNote) {
-    document.getElementById(targetNote).parentNode.classList.remove('hide'); //
+  if (targetNoteId) {
+    document.getElementById(targetNoteId).parentNode.classList.remove('hide'); //
   }
   text.scrollTop += scrollDiff;
   jumpHighlight();
-  currentNote = targetNote;
+  currentNoteId = targetNoteId;
 }
 
 // Not working on Chrome on phone.
 
-function getScrollDiff(targetNote) {
-  if (targetNote) {
-    var targetNoteBox = document.getElementById(targetNote).getBoundingClientRect();
-    var targetNoteOrigin = targetNoteBox.top;
-    var targetNoteHt = targetNoteBox.height;
-    if (targetNoteHt > targetNoteOrigin) {
-      return targetNoteOrigin;
-    }
+function getScrollDiff(targetNoteId) {
 
-    // Above stops note from opening above top of window.
-    // "She had" to "dark suit" doesn't work.
-    // "had your" to "Pardon" doesn't work.
-
-  } else {
-    var targetNoteOrigin = null;
-    var targetNoteHt = null;
+  var targetNote = document.getElementById(targetNoteId);
+  var targetNoteOrigin = targetNote ? targetNote.offsetTop : null;
+  var targetNoteHt = targetNote ? targetNote.clientHeight : null;
+  
+  if (targetNoteHt > targetNoteOrigin) {
+    return targetNoteOrigin;
   }
-  if (currentNote) {
-    var currentNoteBox = document.getElementById(currentNote).getBoundingClientRect();
-    var currentNoteOrigin = currentNoteBox.top;
-    if (targetNoteOrigin && targetNoteOrigin < currentNoteOrigin) {
 
-    // If current note is below target note, it shouldn't enter into the calculations, so it's set to zero.
+// Above is supposed to stop note from opening above top of window.
+// "She had" to "dark suit" doesn't work.
+// "had your" to "Pardon" doesn't work.
+// Should it break and do 'text.scrollTop = targetNoteOrigin'?
+// Or does it have to do with closing the current note and not opening the
+// target note?
 
-      var currentNoteHt = null;
-    } else {
-      var currentNoteHt = currentNoteBox.height;
-    }
-  } else {
-    var currentNoteHt = null;
-  }
-  noteHtDiff = targetNoteHt - currentNoteHt;
+  var currentNote = document.getElementById(currentNoteId);
+  var currentNoteOrigin = currentNote ? currentNote.offsetTop : null;
+  var currentNoteHt = !currentNote | targetNoteOrigin < currentNoteOrigin ? null : currentNote.clientHeight;
 
-  // When scrolled close to or at bottom of window, scrollTop needs less or no correction. This accounts for that.
+  var noteHtDiff = targetNoteHt - currentNoteHt;
 
-  scrollBottom = text.scrollTopMax - text.scrollTop;
+// When scrolled close to or at bottom of window, scrollTop needs less or no
+// correction. Below accounts for that.
+
+  var scrollBottom = text.scrollTopMax - text.scrollTop;
   if (scrollBottom + noteHtDiff < 0) {
     noteHtDiff = -scrollBottom;
   }
 
   return noteHtDiff;
 }
-
-// Closing note when scrolled to bottom of window jumps up.
 
 //
 
