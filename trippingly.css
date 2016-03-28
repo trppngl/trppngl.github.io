@@ -51,14 +51,23 @@ button {
 
 div.v {
   background-color: #f7f7f7;
+  text-align: left;
+  font: 20px 'Linux Libertine', serif;
+  padding: 10px;
 }
 
 div.p {
   background-color: #f7f7f7;
+  text-align: left;
+  font: 20px 'Linux Libertine', serif;
+  padding: 10px;
 }
 
 div.g {
   background-color: #f7f7f7;
+  text-align: left;
+  font: 20px 'Linux Libertine', serif;
+  padding: 10px;
 }
 
 span {

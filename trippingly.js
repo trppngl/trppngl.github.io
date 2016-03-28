@@ -158,8 +158,11 @@ function getScrollDiff(targetNote) {
     var targetNoteOrigin = targetNoteBox.top;
     var targetNoteHt = targetNoteBox.height;
     if (targetNoteHt > targetNoteOrigin) {
-      return targetNoteOrigin; // Stop note from opening above top of window
+      return targetNoteOrigin;
     }
+
+    // Above stops note from opening above top of window. Currently doesn't work when going from a shorter note to a longer note, both at the top of the window. Fix using scrollTo? Also doesn't work when going from "had your" to "Pardon".
+
   } else {
     var targetNoteOrigin = null;
     var targetNoteHt = null;
