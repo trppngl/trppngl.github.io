@@ -139,18 +139,20 @@ function toggleNote(targetNote) {
 }
 
 function showNote(targetNote) {
-  scrollDiff = getScrollDiff(targetNote);
+  // scrollDiff = getScrollDiff(targetNote);
   if (currentNote) {
     document.getElementById(currentNote).parentNode.classList.add('hide'); //
   }
   if (targetNote) {
     document.getElementById(targetNote).parentNode.classList.remove('hide'); //
   }
-  text.scrollTop += scrollDiff;
-  console.log(scrollDiff);
+  // text.scrollTop += scrollDiff;
+  // console.log(scrollDiff);
   jumpHighlight();
   currentNote = targetNote;
 }
+/*
+// Not working on Chrome on phone.
 
 function getScrollDiff(targetNote) {
   if (targetNote) {
@@ -194,7 +196,7 @@ function getScrollDiff(targetNote) {
 
   return noteHtDiff;
 }
-
+*/
 // Closing note when scrolled to bottom of window jumps up.
 
 //
