@@ -161,7 +161,9 @@ function getScrollDiff(targetNote) {
       return targetNoteOrigin;
     }
 
-    // Above stops note from opening above top of window. Currently doesn't work when going from a shorter note to a longer note, both at the top of the window. Fix using scrollTo? Also doesn't work when going from "had your" to "Pardon".
+    // Above stops note from opening above top of window.
+    // "She had" to "dark suit" doesn't work.
+    // "had your" to "Pardon" doesn't work.
 
   } else {
     var targetNoteOrigin = null;
