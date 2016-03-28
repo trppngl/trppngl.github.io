@@ -61,9 +61,9 @@ function startSeg(targetIndex) {
 }
 
 function highlighter() {
-  var segBox = segs[currentIndex].getBoundingClientRect();
-  var segTop = segBox.top + text.scrollTop;
-  var segHt = segBox.height;
+  var seg = segs[currentIndex];
+  var segTop = seg.offsetTop;
+  var segHt = seg.clientHeight;
   var cssText = 'top: ' + segTop + 'px; height: ' + segHt + 'px;';
   highlight.style = cssText;
 }
@@ -139,19 +139,18 @@ function toggleNote(targetNote) {
 }
 
 function showNote(targetNote) {
-  // scrollDiff = getScrollDiff(targetNote);
+  scrollDiff = getScrollDiff(targetNote);
   if (currentNote) {
     document.getElementById(currentNote).parentNode.classList.add('hide'); //
   }
   if (targetNote) {
     document.getElementById(targetNote).parentNode.classList.remove('hide'); //
   }
-  // text.scrollTop += scrollDiff;
-  // console.log(scrollDiff);
+  text.scrollTop += scrollDiff;
   jumpHighlight();
   currentNote = targetNote;
 }
-/*
+
 // Not working on Chrome on phone.
 
 function getScrollDiff(targetNote) {
@@ -196,7 +195,7 @@ function getScrollDiff(targetNote) {
 
   return noteHtDiff;
 }
-*/
+
 // Closing note when scrolled to bottom of window jumps up.
 
 //
