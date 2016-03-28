@@ -178,7 +178,15 @@ function getScrollDiff(targetNote) {
     var currentNoteHt = null;
   }
   console.log('targetNoteHt ' + targetNoteHt + ' - currentNoteHt ' + currentNoteHt);
-  return targetNoteHt - currentNoteHt;
+  noteHtDiff = targetNoteHt - currentNoteHt;
+
+  scrollBottom = text.scrollTopMax - text.scrollTop;
+  console.log('scrollBottom ' + scrollBottom);
+  if (scrollBottom + noteHtDiff < 0) {
+    noteHtDiff = -scrollBottom;
+  }
+
+  return noteHtDiff;
 }
 
 // Closing note when scrolled to bottom of window jumps up.
