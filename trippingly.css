@@ -27,7 +27,6 @@ p {
 
 .slow {
   transition: top 300ms, height 300ms;
-  transition-timing-function: ease;
 }
 
 #text {
@@ -87,6 +86,6 @@ span.g {
 .hide {
   height: 0;
   overflow: hidden;
-  transition: height 300ms;
-  transition-timing-function: ease;
+/*transition: height 300ms;
+  transition-timing-function: ease;*/
 }

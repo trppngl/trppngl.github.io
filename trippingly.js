@@ -7,6 +7,8 @@ var playButton = document.getElementById('play');
 var segs = [];
 segs.push.apply(segs, document.getElementsByClassName('seg'));
 
+// Could I do the above with querySelectorAll? The goal of pushing to an array is to make sure it isn't live, but apparently with querySelectorAll, it wouldn't be.
+
 var length = segs.length;
 
 var segData = [];
@@ -60,6 +62,11 @@ function startSeg(targetIndex) {
   }
 }
 
+// According to Julian Shapiro's book, translateY and scaleY might be better than top and height?
+
+// And Kirupa recommends translate3d for smoothness.
+// Says top (and five other properties) require a layout recalculation every step of the way. Though if the element's position is absolute (as with the highlight), that's not as bas as it would be if it was the entire thing. All that at the end of chapter 6.
+
 function highlighter() {
   var seg = segs[currentIndex];
   var segTop = seg.offsetTop;
@@ -67,6 +74,18 @@ function highlighter() {
   var cssText = 'top: ' + segTop + 'px; height: ' + segHt + 'px;';
   highlight.style = cssText;
 }
+
+/* To animate highlight with Velocity use:
+
+Velocity(highlight, {top: segTop, height: segHt}, {duration: 300, easing: 'ease'});
+
+!!! As it stands, .slow in stylesheet will interfere !!!
+
+Duration should actually be made into a variable. Either a global variable set in the two functions that call highlighter() or (probably better) as an argument that gets passed to highlighter().
+
+But doing it with Velocity, each individual move looks good, but multiple moves (like when holding or repeatedly hitting the arrow keys) don't look as good. Could play with that.
+
+*/
 
 function playAudio() {
   audio.play();
@@ -109,7 +128,7 @@ function togglePlayButton() {
 //
 
 function toggleLinkMode(input) {
-  showNote(null);
+  // showNote(null);
   if (linkMode === input) {
     linkMode = 'plain';
   } else {
@@ -131,6 +150,34 @@ function writeSegs() {
 //
 
 function toggleNote(targetNoteId) {
+  showNote(targetNoteId);
+}
+
+function showNote(targetNoteId) {
+  targetNote = document.getElementById(targetNoteId);
+  console.log(targetNote);
+  targetNoteHt = targetNote.clientHeight;
+  console.log(targetNoteHt);
+  targetDrawer = targetNote.parentNode;
+  console.log(targetDrawer);
+  targetDrawerHt = targetDrawer.clientHeight;
+  console.log(targetDrawerHt);
+  requestAnimationFrame(animate);
+}
+
+function animate() {
+  if (targetDrawerHt < targetNoteHt) {
+    targetDrawerHt++;
+    targetDrawer.style.height = targetDrawerHt + 'px';
+    text.scrollTop++;
+    requestAnimationFrame(animate);
+  }
+}
+
+//
+
+/*
+function toggleNote(targetNoteId) {
   if (currentNoteId === targetNoteId) {
     showNote(null);
   } else {
@@ -139,19 +186,17 @@ function toggleNote(targetNoteId) {
 }
 
 function showNote(targetNoteId) {
-  scrollDiff = getScrollDiff(targetNoteId);
+  // scrollDiff = getScrollDiff(targetNoteId);
   if (currentNoteId) {
     document.getElementById(currentNoteId).parentNode.classList.add('hide'); //
   }
   if (targetNoteId) {
     document.getElementById(targetNoteId).parentNode.classList.remove('hide'); //
   }
-  text.scrollTop += scrollDiff;
+  // text.scrollTop += scrollDiff;
   jumpHighlight();
   currentNoteId = targetNoteId;
 }
-
-// Not working on Chrome on phone.
 
 function getScrollDiff(targetNoteId) {
 
@@ -186,6 +231,7 @@ function getScrollDiff(targetNoteId) {
 
   return noteHtDiff;
 }
+*/
 
 //
 
@@ -252,6 +298,8 @@ function jumpHighlight() {
 }
 
 //
+
+// Debounce resize handler?
 
 window.addEventListener('keydown', handleKeydown, false);
 window.addEventListener('resize', jumpHighlight, false);
