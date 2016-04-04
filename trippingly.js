@@ -155,23 +155,38 @@ function toggleNote(targetNoteId) {
 
 function showNote(targetNoteId) {
   targetNote = document.getElementById(targetNoteId);
-  console.log(targetNote);
   targetNoteHt = targetNote.clientHeight;
-  console.log(targetNoteHt);
   targetDrawer = targetNote.parentNode;
-  console.log(targetDrawer);
   targetDrawerHt = targetDrawer.clientHeight;
-  console.log(targetDrawerHt);
-  requestAnimationFrame(animate);
+  currentFrame = 0;
+  totalFrames = 30;
+  changingNote = true;
+  initialScrollTop = text.scrollTop;
+  animate();
 }
 
 function animate() {
-  if (targetDrawerHt < targetNoteHt) {
-    targetDrawerHt++;
-    targetDrawer.style.height = targetDrawerHt + 'px';
-    text.scrollTop++;
+  if (changingNote) {
+
+    currentValue = easeOutCubic(currentFrame, 0, targetNoteHt, totalFrames);
+    console.log(currentValue);
+
+    targetDrawer.style.height = currentValue + 'px';
+    text.scrollTop = (initialScrollTop + currentValue);
+
+    if (currentFrame < totalFrames) {
+      currentFrame++;
+    } else {
+      currentFrame = 0;
+      changingNote = false;
+    }
+    
     requestAnimationFrame(animate);
   }
+}
+
+function easeOutCubic(currentIteration, startValue, changeInValue, totalIterations) {
+  return changeInValue * (Math.pow(currentIteration / totalIterations - 1, 3) + 1) + startValue;
 }
 
 //
