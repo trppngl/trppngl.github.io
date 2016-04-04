@@ -150,7 +150,28 @@ function writeSegs() {
 //
 
 function toggleNote(targetNoteId) {
-  showNote(targetNoteId);
+  if (currentNoteId === targetNoteId) {
+    hideNote(targetNoteId);
+  } else {
+    showNote(targetNoteId);
+    currentNoteId = targetNoteId;
+  }
+}
+
+function hideNote(targetNoteId) {
+  targetNote = document.getElementById(targetNoteId);
+  targetNoteHt = targetNote.clientHeight;
+  targetDrawer = targetNote.parentNode;
+  targetDrawerHt = targetDrawer.clientHeight;
+  currentFrame = 0;
+  totalFrames = 30;
+  changingNote = true;
+  initialScrollTop = text.scrollTop;
+
+  startValue = targetNoteHt;
+  changeInValue = -targetNoteHt;
+
+  animate();
 }
 
 function showNote(targetNoteId) {
@@ -162,13 +183,17 @@ function showNote(targetNoteId) {
   totalFrames = 30;
   changingNote = true;
   initialScrollTop = text.scrollTop;
+
+  startValue = 0;
+  changeInValue = targetNoteHt;
+
   animate();
 }
 
 function animate() {
   if (changingNote) {
 
-    currentValue = easeOutCubic(currentFrame, 0, targetNoteHt, totalFrames);
+    currentValue = easeOutCubic(currentFrame, startValue, changeInValue, totalFrames);
     console.log(currentValue);
 
     targetDrawer.style.height = currentValue + 'px';
