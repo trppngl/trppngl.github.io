@@ -83,9 +83,7 @@ span.p {
 span.g {
 }
 
-.hide {
+.drawer {
   height: 0;
   overflow: hidden;
-/*transition: height 300ms;
-  transition-timing-function: ease;*/
 }

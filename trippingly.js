@@ -31,7 +31,15 @@ var playAll = 0;
 var linkMode = 'plain';
 var currentNoteId = null;
 
+var currentNote = null;
+var targetNote = null;
+
 // hashNote();
+
+var currentFrame = 0;
+var totalFrames = 30;
+var animating = false;
+var scrolling = false;
 
 //
 
@@ -62,11 +70,6 @@ function startSeg(targetIndex) {
   }
 }
 
-// According to Julian Shapiro's book, translateY and scaleY might be better than top and height?
-
-// And Kirupa recommends translate3d for smoothness.
-// Says top (and five other properties) require a layout recalculation every step of the way. Though if the element's position is absolute (as with the highlight), that's not as bas as it would be if it was the entire thing. All that at the end of chapter 6.
-
 function highlighter() {
   var seg = segs[currentIndex];
   var segTop = seg.offsetTop;
@@ -74,18 +77,6 @@ function highlighter() {
   var cssText = 'top: ' + segTop + 'px; height: ' + segHt + 'px;';
   highlight.style = cssText;
 }
-
-/* To animate highlight with Velocity use:
-
-Velocity(highlight, {top: segTop, height: segHt}, {duration: 300, easing: 'ease'});
-
-!!! As it stands, .slow in stylesheet will interfere !!!
-
-Duration should actually be made into a variable. Either a global variable set in the two functions that call highlighter() or (probably better) as an argument that gets passed to highlighter().
-
-But doing it with Velocity, each individual move looks good, but multiple moves (like when holding or repeatedly hitting the arrow keys) don't look as good. Could play with that.
-
-*/
 
 function playAudio() {
   audio.play();
@@ -125,7 +116,7 @@ function togglePlayButton() {
   }
 }
 
-//
+// Links
 
 function toggleLinkMode(input) {
   // showNote(null);
@@ -147,76 +138,8 @@ function writeSegs() {
   }
 }
 
-//
+// Notes
 
-function toggleNote(targetNoteId) {
-  if (currentNoteId === targetNoteId) {
-    hideNote(targetNoteId);
-  } else {
-    showNote(targetNoteId);
-    currentNoteId = targetNoteId;
-  }
-}
-
-function hideNote(targetNoteId) {
-  targetNote = document.getElementById(targetNoteId);
-  targetNoteHt = targetNote.clientHeight;
-  targetDrawer = targetNote.parentNode;
-  targetDrawerHt = targetDrawer.clientHeight;
-  currentFrame = 0;
-  totalFrames = 30;
-  changingNote = true;
-  initialScrollTop = text.scrollTop;
-
-  startValue = targetNoteHt;
-  changeInValue = -targetNoteHt;
-
-  animate();
-}
-
-function showNote(targetNoteId) {
-  targetNote = document.getElementById(targetNoteId);
-  targetNoteHt = targetNote.clientHeight;
-  targetDrawer = targetNote.parentNode;
-  targetDrawerHt = targetDrawer.clientHeight;
-  currentFrame = 0;
-  totalFrames = 30;
-  changingNote = true;
-  initialScrollTop = text.scrollTop;
-
-  startValue = 0;
-  changeInValue = targetNoteHt;
-
-  animate();
-}
-
-function animate() {
-  if (changingNote) {
-
-    currentValue = easeOutCubic(currentFrame, startValue, changeInValue, totalFrames);
-    console.log(currentValue);
-
-    targetDrawer.style.height = currentValue + 'px';
-    text.scrollTop = (initialScrollTop + currentValue);
-
-    if (currentFrame < totalFrames) {
-      currentFrame++;
-    } else {
-      currentFrame = 0;
-      changingNote = false;
-    }
-    
-    requestAnimationFrame(animate);
-  }
-}
-
-function easeOutCubic(currentIteration, startValue, changeInValue, totalIterations) {
-  return changeInValue * (Math.pow(currentIteration / totalIterations - 1, 3) + 1) + startValue;
-}
-
-//
-
-/*
 function toggleNote(targetNoteId) {
   if (currentNoteId === targetNoteId) {
     showNote(null);
@@ -225,53 +148,67 @@ function toggleNote(targetNoteId) {
   }
 }
 
+function Note(id) {
+  var el = document.getElementById(id);
+  this.height = el.clientHeight;
+  this.drawer = el.parentNode;
+}
+
 function showNote(targetNoteId) {
-  // scrollDiff = getScrollDiff(targetNoteId);
   if (currentNoteId) {
-    document.getElementById(currentNoteId).parentNode.classList.add('hide'); //
+    currentNote = new Note(currentNoteId);
   }
   if (targetNoteId) {
-    document.getElementById(targetNoteId).parentNode.classList.remove('hide'); //
-  }
-  // text.scrollTop += scrollDiff;
-  jumpHighlight();
-  currentNoteId = targetNoteId;
+    targetNote = new Note(targetNoteId);
+  }    
+  initialScrollTop = text.scrollTop;
+  animating = true;
+  scrolling = true;
+  animate();
 }
 
-function getScrollDiff(targetNoteId) {
+function animate() {
+  console.log('animating');
+  if (animating) {
 
-  var targetNote = document.getElementById(targetNoteId);
-  var targetNoteOrigin = targetNote ? targetNote.offsetTop : null;
-  var targetNoteHt = targetNote ? targetNote.clientHeight : null;
-  
-  if (targetNoteHt > targetNoteOrigin) {
-    return targetNoteOrigin;
+    if (currentNote) {
+      currentNoteXYZ = easeOutCubic(currentFrame, currentNote.height, -currentNote.height, totalFrames);
+      currentNote.drawer.style.height = currentNoteXYZ + 'px';
+      // if (currentNoteHigher)
+      // currentNoteDiff
+    }
+
+    if (targetNote) {
+      targetNoteXYZ = easeOutCubic(currentFrame, 0, targetNote.height, totalFrames);
+      targetNote.drawer.style.height = targetNoteXYZ + 'px';
+    }
+
+    /*
+    // if (scrolling) {
+      // currentNoteDiff only if currentNote is above targetNote 
+    // }
+    */
+
+    if (currentFrame < totalFrames) {
+      currentFrame++;
+    } else {
+      finishAnimation();
+    }
+    
+    requestAnimationFrame(animate);
   }
-
-// Above is supposed to stop note from opening above top of window.
-// "She had" to "dark suit" doesn't work.
-// "had your" to "Pardon" doesn't work.
-// Should it break and do 'text.scrollTop = targetNoteOrigin'?
-// Or does it have to do with closing the current note and not opening the
-// target note?
-
-  var currentNote = document.getElementById(currentNoteId);
-  var currentNoteOrigin = currentNote ? currentNote.offsetTop : null;
-  var currentNoteHt = !currentNote | targetNoteOrigin < currentNoteOrigin ? null : currentNote.clientHeight;
-
-  var noteHtDiff = targetNoteHt - currentNoteHt;
-
-// When scrolled close to or at bottom of window, scrollTop needs less or no
-// correction. Below accounts for that.
-
-  var scrollBottom = text.scrollTopMax - text.scrollTop;
-  if (scrollBottom + noteHtDiff < 0) {
-    noteHtDiff = -scrollBottom;
-  }
-
-  return noteHtDiff;
 }
-*/
+
+function finishAnimation() {
+  console.log('finishing');
+  currentFrame = 0;
+  animating = false;
+  scrolling = false;
+}
+
+function easeOutCubic(currentIteration, startValue, changeInValue, totalIterations) {
+  return changeInValue * (Math.pow(currentIteration / totalIterations - 1, 3) + 1) + startValue;
+}
 
 //
 
