@@ -142,6 +142,7 @@ function writeSegs() {
 
 function toggleNote(targetNoteId) {
   if (currentNoteId === targetNoteId) {
+    console.log('snowNote(null)');
     showNote(null);
   } else {
     showNote(targetNoteId);
@@ -149,17 +150,19 @@ function toggleNote(targetNoteId) {
 }
 
 function Note(id) {
-  var el = document.getElementById(id);
-  this.height = el.clientHeight;
-  this.drawer = el.parentNode;
+  this.el = document.getElementById(id);
+  this.height = this.el.clientHeight;
+  this.drawer = this.el.parentNode;
 }
 
 function showNote(targetNoteId) {
   if (currentNoteId) {
     currentNote = new Note(currentNoteId);
+    console.log('currentNote');
   }
   if (targetNoteId) {
     targetNote = new Note(targetNoteId);
+    console.log('targetNote');
   }    
   initialScrollTop = text.scrollTop;
   animating = true;
@@ -192,7 +195,16 @@ function animate() {
     if (currentFrame < totalFrames) {
       currentFrame++;
     } else {
-      finishAnimation();
+      console.log('finishing');
+      currentFrame = 0;
+      animating = false;
+      scrolling = false;
+      if (targetNote) {
+        currentNoteId = targetNote.el.getAttribute('id');
+      } else {
+        currentNoteId = null;
+      }
+      targetNote = null;
     }
     
     requestAnimationFrame(animate);
