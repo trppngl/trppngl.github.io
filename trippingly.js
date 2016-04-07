@@ -174,7 +174,7 @@ function animate() {
   if (animating) {
 
     if (currentNote.id) {
-      currentNoteXYZ = easeOutCubic(currentFrame, currentNote.height, -currentNote.height, totalFrames);
+      currentNoteXYZ = Math.round(easeOutCubic(currentFrame, currentNote.height, -currentNote.height, totalFrames));
       scrollOffset = -targetNoteXYZ;
       currentNote.drawer.style.height = currentNoteXYZ + 'px';
       // if (currentNoteHigher)
@@ -182,7 +182,7 @@ function animate() {
     }
 
     if (targetNote.id) {
-      targetNoteXYZ = easeOutCubic(currentFrame, 0, targetNote.height, totalFrames);
+      targetNoteXYZ = Math.round(easeOutCubic(currentFrame, 0, targetNote.height, totalFrames));
       scrollOffset = targetNoteXYZ;
       targetNote.drawer.style.height = targetNoteXYZ + 'px';
     }
