@@ -29,10 +29,9 @@ var currentIndex = -1;
 var playAll = 0;
 
 var linkMode = 'plain';
-var currentNoteId = null;
 
-var currentNote = null;
-var targetNote = null;
+var currentNote = new Note();
+var targetNote = new Note();
 
 // hashNote();
 
@@ -40,6 +39,8 @@ var currentFrame = 0;
 var totalFrames = 30;
 var animating = false;
 var scrolling = false;
+
+var initialScrollTop;
 
 //
 
@@ -72,7 +73,7 @@ function startSeg(targetIndex) {
 
 function highlighter() {
   var seg = segs[currentIndex];
-  var segTop = seg.offsetTop;
+  var segTop = seg.offsetTop; // An expensive operation? Better way?
   var segHt = seg.clientHeight;
   var cssText = 'top: ' + segTop + 'px; height: ' + segHt + 'px;';
   highlight.style = cssText;
@@ -141,8 +142,7 @@ function writeSegs() {
 // Notes
 
 function toggleNote(targetNoteId) {
-  if (currentNoteId === targetNoteId) {
-    console.log('snowNote(null)');
+  if (targetNoteId === currentNote.id) { // Improve
     showNote(null);
   } else {
     showNote(targetNoteId);
@@ -150,20 +150,20 @@ function toggleNote(targetNoteId) {
 }
 
 function Note(id) {
-  this.el = document.getElementById(id);
-  this.height = this.el.clientHeight;
-  this.drawer = this.el.parentNode;
+  if (id) {
+    var el = document.getElementById(id);
+    this.id = id;
+    this.height = el.clientHeight;
+    this.drawer = el.parentNode;
+  } else {
+    this.id = null;
+  }
 }
 
 function showNote(targetNoteId) {
-  if (currentNoteId) {
-    currentNote = new Note(currentNoteId);
-    console.log('currentNote');
-  }
   if (targetNoteId) {
     targetNote = new Note(targetNoteId);
-    console.log('targetNote');
-  }    
+  }
   initialScrollTop = text.scrollTop;
   animating = true;
   scrolling = true;
@@ -171,40 +171,31 @@ function showNote(targetNoteId) {
 }
 
 function animate() {
-  console.log('animating');
   if (animating) {
 
-    if (currentNote) {
+    if (currentNote.id) {
       currentNoteXYZ = easeOutCubic(currentFrame, currentNote.height, -currentNote.height, totalFrames);
+      scrollOffset = -targetNoteXYZ;
       currentNote.drawer.style.height = currentNoteXYZ + 'px';
       // if (currentNoteHigher)
       // currentNoteDiff
     }
 
-    if (targetNote) {
+    if (targetNote.id) {
       targetNoteXYZ = easeOutCubic(currentFrame, 0, targetNote.height, totalFrames);
+      scrollOffset = targetNoteXYZ;
       targetNote.drawer.style.height = targetNoteXYZ + 'px';
     }
 
-    /*
+    text.scrollTop = initialScrollTop + scrollOffset;
     // if (scrolling) {
       // currentNoteDiff only if currentNote is above targetNote 
     // }
-    */
 
     if (currentFrame < totalFrames) {
       currentFrame++;
     } else {
-      console.log('finishing');
-      currentFrame = 0;
-      animating = false;
-      scrolling = false;
-      if (targetNote) {
-        currentNoteId = targetNote.el.getAttribute('id');
-      } else {
-        currentNoteId = null;
-      }
-      targetNote = null;
+      finishAnimation();
     }
     
     requestAnimationFrame(animate);
@@ -212,10 +203,11 @@ function animate() {
 }
 
 function finishAnimation() {
-  console.log('finishing');
   currentFrame = 0;
   animating = false;
   scrolling = false;
+  currentNote = targetNote;
+  targetNote = new Note();
 }
 
 function easeOutCubic(currentIteration, startValue, changeInValue, totalIterations) {
