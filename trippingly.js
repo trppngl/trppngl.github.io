@@ -13,13 +13,15 @@ var length = segs.length;
 
 var segData = [];
 for (i = 0; i < length; i++) {
+  var seg = segs[i];
+  var times = seg.getAttribute('data-times').split(' ');
   segData.push({
-    'start': Number(segs[i].getAttribute('data-start')),
-    'stop': Number(segs[i].getAttribute('data-stop')),
-    'plain': segs[i].textContent,
-    'v': segs[i].getAttribute('data-v'),
-    'p': segs[i].getAttribute('data-p'),
-    'g': segs[i].getAttribute('data-g')
+    'start': Number(times[0]),
+    'stop': Number(times[1]),
+    'plain': seg.textContent,
+    'v': seg.getAttribute('data-v'),
+    'p': seg.getAttribute('data-p'),
+    'g': seg.getAttribute('data-g')
   });
 }
 
@@ -81,18 +83,34 @@ function highlighter() {
 
 function playAudio() {
   audio.play();
-  timer = window.setInterval(stopWatch, 100);
+  timer = window.setInterval(stopWatch, 20);
 }
 
+// As it stands, stopWatch() skips audio (mostly relative silence) between segments. The audio should simply play through, and the highlight should... What? Disappear? Only move at the beginning of the next segment?
+
+function stopWatch() {
+  if (audio.currentTime > segData[currentIndex + 1].start) {
+    if (playAll === 1 && currentIndex < length - 1) {
+      next();
+    } else {
+      console.log(audio.currentTime);
+      pauseAudio();
+    }
+  }
+}
+
+/*
 function stopWatch() {
   if (audio.currentTime > segData[currentIndex].stop) {
     if (playAll === 1 && currentIndex < length - 1) {
       next();
     } else {
+      console.log(audio.currentTime);
       pauseAudio();
     }
   }
 }
+*/
 
 function pauseAudio() {
   audio.pause();
