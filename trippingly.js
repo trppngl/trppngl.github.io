@@ -61,15 +61,19 @@ function next() {
   }
 }
 
-function startSeg(targetIndex) {
+function startSeg(targetIndex, auto) { // Inelegant?
   if (currentIndex != targetIndex) {
     currentIndex = targetIndex;
     highlight.className = 'slow'; // Move highlight with slow transition
     highlighter();
   }
-  if (audio.paused) {
+  if (auto !== 1) { // Inelegant?
+    console.log('auto !== true');
     audio.currentTime = segData[currentIndex].start;
-    // Above line used to come right before this conditional. Putting it inside makes it so audio never jumps at all when playing through, which is good. But it makes it so you can't change segments manually while audio is playing. Need to fix that.
+  } else {
+    console.log('else');
+  }
+  if (audio.paused) {
     playAudio();
   }
 }
@@ -90,7 +94,7 @@ function playAudio() {
 function stopWatch() {
   if (audio.currentTime > segData[currentIndex].stop) {
     if (playAll === 1 && currentIndex < length - 1) {
-      next();
+      startSeg(currentIndex + 1, 1); // next();
     } else {
       console.log(audio.currentTime);
       pauseAudio();
