@@ -67,8 +67,9 @@ function startSeg(targetIndex) {
     highlight.className = 'slow'; // Move highlight with slow transition
     highlighter();
   }
-  audio.currentTime = segData[currentIndex].start;
   if (audio.paused) {
+    audio.currentTime = segData[currentIndex].start;
+    // Above line used to come right before this conditional. Putting it inside makes it so audio never jumps at all when playing through, which is good. But it makes it so you can't change segments manually while audio is playing. Need to fix that.
     playAudio();
   }
 }
@@ -86,20 +87,6 @@ function playAudio() {
   timer = window.setInterval(stopWatch, 20);
 }
 
-// As it stands, stopWatch() skips audio (mostly relative silence) between segments. The audio should simply play through, and the highlight should... What? Disappear? Only move at the beginning of the next segment?
-
-function stopWatch() {
-  if (audio.currentTime > segData[currentIndex + 1].start) {
-    if (playAll === 1 && currentIndex < length - 1) {
-      next();
-    } else {
-      console.log(audio.currentTime);
-      pauseAudio();
-    }
-  }
-}
-
-/*
 function stopWatch() {
   if (audio.currentTime > segData[currentIndex].stop) {
     if (playAll === 1 && currentIndex < length - 1) {
@@ -110,7 +97,6 @@ function stopWatch() {
     }
   }
 }
-*/
 
 function pauseAudio() {
   audio.pause();
