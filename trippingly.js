@@ -32,18 +32,6 @@ var playAll = 0;
 
 var linkMode = 'plain';
 
-var currentNote = new Note();
-var targetNote = new Note();
-
-// hashNote();
-
-var currentFrame = 0;
-var totalFrames = 30;
-var animating = false;
-var scrolling = false;
-
-var initialScrollTop;
-
 //
 
 function prev() {
@@ -88,17 +76,15 @@ function highlighter() {
 
 function playAudio() {
   audio.play();
-  timer = window.setInterval(stopWatch, 20);
+  timer = window.setInterval(checkStop, 20);
 }
 
-function stopWatch() {
-  if (audio.currentTime > segData[currentIndex].stop) {
-    if (playAll === 1 && currentIndex < length - 1) {
-      startSeg(currentIndex + 1, 1); // next();
-    } else {
-      console.log(audio.currentTime);
-      pauseAudio();
-    }
+function checkStop() {
+  if (audio.currentTime > segData[currentIndex].stop && playAll === 0) {
+    pauseAudio();
+  }
+  if (audio.currentTime > segData[currentIndex + 1].start && playAll === 1 && currentIndex < length - 1) {
+    startSeg(currentIndex + 1, 1); // next();
   }
 }
 
@@ -128,7 +114,6 @@ function togglePlayButton() {
 // Links
 
 function toggleLinkMode(input) {
-  // showNote(null);
   if (linkMode === input) {
     linkMode = 'plain';
   } else {
@@ -147,111 +132,12 @@ function writeSegs() {
   }
 }
 
-// Notes
-
-function toggleNote(targetNoteId) {
-  if (targetNoteId === currentNote.id) { // Improve
-    showNote(null);
-  } else {
-    showNote(targetNoteId);
-  }
-}
-
-function Note(id) {
-  if (id) {
-    var el = document.getElementById(id);
-    this.id = id;
-    this.height = el.clientHeight;
-    this.drawer = el.parentNode;
-  } else {
-    this.id = null;
-  }
-}
-
-function showNote(targetNoteId) {
-  if (targetNoteId) {
-    targetNote = new Note(targetNoteId);
-  }
-  initialScrollTop = text.scrollTop;
-  animating = true;
-  scrolling = true;
-  animate();
-}
-
-function animate() {
-  if (animating) {
-
-    if (currentNote.id) {
-      currentNoteXYZ = Math.round(easeOutCubic(currentFrame, currentNote.height, -currentNote.height, totalFrames));
-      scrollOffset = -targetNoteXYZ;
-      currentNote.drawer.style.height = currentNoteXYZ + 'px';
-      // if (currentNoteHigher)
-      // currentNoteDiff
-    }
-
-    if (targetNote.id) {
-      targetNoteXYZ = Math.round(easeOutCubic(currentFrame, 0, targetNote.height, totalFrames));
-      scrollOffset = targetNoteXYZ;
-      targetNote.drawer.style.height = targetNoteXYZ + 'px';
-    }
-
-    text.scrollTop = initialScrollTop + scrollOffset;
-    // if (scrolling) {
-      // currentNoteDiff only if currentNote is above targetNote 
-    // }
-
-    if (currentFrame < totalFrames) {
-      currentFrame++;
-    } else {
-      finishAnimation();
-    }
-    
-    requestAnimationFrame(animate);
-  }
-}
-
-function finishAnimation() {
-  currentFrame = 0;
-  animating = false;
-  scrolling = false;
-  currentNote = targetNote;
-  targetNote = new Note();
-}
-
-function easeOutCubic(currentIteration, startValue, changeInValue, totalIterations) {
-  return changeInValue * (Math.pow(currentIteration / totalIterations - 1, 3) + 1) + startValue;
-}
-
 //
 
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
     startSeg(Number(e.target.getAttribute('id')));
-  } else if (e.target.tagName.toLowerCase() === 'span') { // Other spans?
-    toggleNote(e.target.getAttribute('data-note'));
-  }
-}
-
-function handleButtonClick(e) {
-  switch(e.target.getAttribute('id')) {
-    case 'next':
-      next();
-      break;
-    case 'prev':
-      prev();
-      break;
-    case 'play':
-      togglePlayAll();
-      break;
-    case 'vocab':
-      toggleLinkMode('v');
-      break;
-    case 'pron':
-      toggleLinkMode('p');
-      break;
-    case 'gram':
-      toggleLinkMode('g');
-      break;
+  // Here I used to have an else if for links
   }
 }
 

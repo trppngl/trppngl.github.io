@@ -1,7 +1,16 @@
 body {
   color: #333;
-  margin: 0;
   background-color: #fff;
+  font-family: 'Linux Libertine', serif;
+  font-feature-settings: 'onum' 1;
+  /* margin: 0; */
+}
+
+#text {
+  font-size: 24px;
+  text-align: center;
+  max-width: 550px;
+  margin: 0 auto;
 }
 
 p {
@@ -10,17 +19,9 @@ p {
   padding: 0.25em; /* 6px, look into this */
 }
 
-#text-pane {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column-reverse;
-  max-width: 550px;
-  height: 100vh;
-}
-
 #highlight {
   position: absolute;
-  width: 100%;
+  width: 550px; /* used to be 100%, changed in geneva */
   background-color: #fffbf1;
   z-index: -1;
 }
@@ -29,61 +30,10 @@ p {
   transition: top 300ms, height 300ms;
 }
 
-#text {
-  font: 24px 'Linux Libertine', serif;
-  text-align: center;
-  order: 1;
-  overflow: auto;
-  position: relative; /* So that #highlight can be absolute */
+span.v1 {
+  color: #00a690;
 }
 
-#buttons {
-  text-align: center;
-  order: 0;
-  flex-shrink: 0;
-}
-
-button {
-  font: 24px 'Linux Libertine', serif;
-  margin: 6px 0;
-}
-
-div.v {
-  background-color: #f7f7f7;
-  text-align: left;
-  font: 20px 'Linux Libertine', serif;
-  padding: 10px;
-}
-
-div.p {
-  background-color: #f7f7f7;
-  text-align: left;
-  font: 20px 'Linux Libertine', serif;
-  padding: 10px;
-}
-
-div.g {
-  background-color: #f7f7f7;
-  text-align: left;
-  font: 20px 'Linux Libertine', serif;
-  padding: 10px;
-}
-
-span {
-  color: blue;
-  cursor: pointer;
-}
-
-span.v {
-}
-
-span.p {
-}
-
-span.g {
-}
-
-.drawer {
-  height: 0;
-  overflow: hidden;
+span.v2 {
+  color: #007360;
 }
