@@ -1,8 +1,6 @@
 var audio = document.getElementById('audio');
 var highlight = document.getElementById('highlight');
 var text = document.getElementById('text');
-var buttons = document.getElementById('buttons');
-var playButton = document.getElementById('play');
 
 var segs = [];
 segs.push.apply(segs, document.getElementsByClassName('seg'));
@@ -30,6 +28,16 @@ for (i = 0; i < length; i++) {
 var currentIndex = -1;
 var playAll = 0;
 
+var currentFrame = 0;
+var totalFrames = 18;
+
+var startTop = 0;
+var startHt = 0;
+var endTop = 0;
+var endHt = 0;
+
+var animating = false;
+
 var linkMode = 'plain';
 
 //
@@ -49,30 +57,55 @@ function next() {
   }
 }
 
-function startSeg(targetIndex, auto) { // Inelegant?
+//
+
+function startSeg(targetIndex, auto) {
   if (currentIndex != targetIndex) {
     currentIndex = targetIndex;
-    highlight.className = 'slow'; // Move highlight with slow transition
-    highlighter();
+    startAnimateHighlight();
   }
-  if (auto !== 1) { // Inelegant?
-    console.log('auto !== true');
+  if (auto !== 1) {
     audio.currentTime = segData[currentIndex].start;
-  } else {
-    console.log('else');
-  }
-  if (audio.paused) {
-    playAudio();
+    if (audio.paused) {
+      playAudio();
+    }
   }
 }
 
-function highlighter() {
+function startAnimateHighlight() {
+  currentFrame = 1;
   var seg = segs[currentIndex];
-  var segTop = seg.offsetTop; // An expensive operation? Better way?
-  var segHt = seg.clientHeight;
-  var cssText = 'top: ' + segTop + 'px; height: ' + segHt + 'px;';
-  highlight.style = cssText;
+  endTop = seg.offsetTop;
+  endHt = seg.clientHeight;
+  startTop = highlight.offsetTop;
+  startHt = highlight.clientHeight;
+  console.log('move highlight to seg ' + currentIndex);
+  console.log('change top from ' + startTop + ' to ' + endTop);
+  console.log('change height from ' + startHt + ' to ' + endHt);
+  animating = true;
 }
+
+function animateHighlight() {
+  if (animating) {
+    console.log('animating');
+    currentTop = Math.round(easeOutCubic(startTop, endTop - startTop, currentFrame, totalFrames));
+    currentHt = Math.round(easeOutCubic(startHt, endHt - startHt, currentFrame, totalFrames));
+    var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px;';
+    highlight.style = cssText;
+    if (currentFrame < 18) {
+      currentFrame += 1;
+    } else {
+      animating = false;
+    }
+  }
+  requestAnimationFrame(animateHighlight);
+}
+
+function easeOutCubic(startValue, changeInValue, currentFrame, totalFrames) {
+  return changeInValue * (Math.pow(currentFrame / totalFrames - 1, 3) + 1) + startValue;
+}
+
+//
 
 function playAudio() {
   audio.play();
@@ -101,14 +134,6 @@ function togglePlayAll() {
     playAll ^= 1;
   }
   togglePlayButton();
-}
-
-function togglePlayButton() {
-  if (playAll === 0) {
-    playButton.textContent = 'Play';
-  } else {
-    playButton.textContent = 'Pause';
-  }
 }
 
 // Links
@@ -181,4 +206,7 @@ window.addEventListener('resize', jumpHighlight, false);
 // window.addEventListener('hashchange', hashNote, false);
 
 text.addEventListener('click', handleTextClick, false);
-buttons.addEventListener('click', handleButtonClick, false);
+
+//
+
+requestAnimationFrame(animateHighlight);
