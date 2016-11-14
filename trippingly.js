@@ -7,10 +7,10 @@ segs.push.apply(segs, document.getElementsByClassName('seg'));
 
 // Could I do the above with querySelectorAll? The goal of pushing to an array is to make sure it isn't live, but apparently with querySelectorAll, it wouldn't be.
 
-var length = segs.length;
+var numSegs = segs.length;
 
 var segData = [];
-for (i = 0; i < length; i++) {
+for (i = 0; i < numSegs; i++) {
   var seg = segs[i];
   var times = seg.getAttribute('data-times').split(' ');
   segData.push({
@@ -33,17 +33,20 @@ var totalFrames = 18;
 
 var startTop = 0;
 var startHt = 0;
+var startScroll = 0;
 var endTop = 0;
 var endHt = 0;
+var endScroll = 0;
 
 var animating = false;
+var scrolling = false;
 
 var linkMode = 'plain';
 
 //
 
 function prev() {
-  var threshold = segData[currentIndex].start + 0.5; // Was 0.2 but 300ms gap
+  var threshold = segData[currentIndex].start + 0.2; // 300ms gap on phones, so could change to 0.5 or find some way to eliminate that gap
   if (audio.currentTime > threshold) {
     startSeg(currentIndex);
   } else if (currentIndex > 0) {
@@ -52,7 +55,7 @@ function prev() {
 }
 
 function next() {
-  if (currentIndex < length - 1) {
+  if (currentIndex < numSegs - 1) {
     startSeg(currentIndex + 1);
   }
 }
@@ -60,10 +63,8 @@ function next() {
 //
 
 function startSeg(targetIndex, auto) {
-  if (currentIndex != targetIndex) {
-    currentIndex = targetIndex;
-    startAnimateHighlight();
-  }
+  currentIndex = targetIndex;
+  startAnimateHighlight();
   if (auto !== 1) {
     audio.currentTime = segData[currentIndex].start;
     if (audio.paused) {
@@ -72,39 +73,59 @@ function startSeg(targetIndex, auto) {
   }
 }
 
-function startAnimateHighlight() {
+function startAnimateHighlight() { // Could use some cleanup
   currentFrame = 1;
+
   var seg = segs[currentIndex];
+
   endTop = seg.offsetTop;
   endHt = seg.clientHeight;
   startTop = highlight.offsetTop;
   startHt = highlight.clientHeight;
+
   console.log('move highlight to seg ' + currentIndex);
   console.log('change top from ' + startTop + ' to ' + endTop);
   console.log('change height from ' + startHt + ' to ' + endHt);
+
+  if (currentIndex < numSegs - 1) {
+    var nextSeg = segs[currentIndex + 1];
+    var nextSegOffset = nextSeg.offsetTop + nextSeg.clientHeight - window.innerHeight - window.pageYOffset;
+    if (nextSegOffset > 0) {
+      console.log('nextSegOffset');
+      startScroll = window.pageYOffset;
+      endScroll = startScroll + nextSegOffset;
+      scrolling = true;
+    }
+  }
+
   animating = true;
 }
 
-function animateHighlight() {
+function animateHighlight() { // Could use some cleanup
   if (animating) {
     console.log('animating');
     currentTop = Math.round(easeOutCubic(startTop, endTop - startTop, currentFrame, totalFrames));
     currentHt = Math.round(easeOutCubic(startHt, endHt - startHt, currentFrame, totalFrames));
     var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px;';
     highlight.style = cssText;
-    if (window.pageYOffset > currentTop) {
-      window.scrollTo(0, currentTop);
-    }
-    var bottomOffset = currentTop + currentHt - window.innerHeight - window.pageYOffset;
-    if (bottomOffset > 0) {
-      window.scrollBy(0, bottomOffset);
-    }
+  }
+
+  if (scrolling) {
+    console.log('scrolling');
+    currentScroll = Math.round(easeOutCubic(startScroll, endScroll - startScroll, currentFrame, totalFrames));
+    console.log(currentScroll);
+    window.scrollTo(0, currentScroll);
+  }
+
+  if (animating || scrolling) {
     if (currentFrame < 18) {
       currentFrame += 1;
     } else {
       animating = false;
+      scrolling = false;
     }
   }
+
   requestAnimationFrame(animateHighlight);
 }
 
@@ -123,7 +144,7 @@ function checkStop() {
   if (audio.currentTime > segData[currentIndex].stop && playAll === 0) {
     pauseAudio();
   }
-  if (audio.currentTime > segData[currentIndex + 1].start && playAll === 1 && currentIndex < length - 1) {
+  if (audio.currentTime > segData[currentIndex + 1].start && playAll === 1 && currentIndex < numSegs - 1) {
     startSeg(currentIndex + 1, 1); // next();
   }
 }
@@ -155,7 +176,7 @@ function toggleLinkMode(input) {
 }
 
 function writeSegs() {
-  for (i = 0; i < length; i++) {
+  for (i = 0; i < numSegs; i++) {
     if (segData[i][linkMode]) {
       segs[i].innerHTML = segData[i][linkMode];
     } else {
