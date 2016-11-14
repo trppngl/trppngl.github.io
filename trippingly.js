@@ -38,7 +38,7 @@ var endTop = 0;
 var endHt = 0;
 var endScroll = 0;
 
-var animating = false;
+var movingHighlight = false;
 var scrolling = false;
 
 var linkMode = 'plain';
@@ -63,8 +63,11 @@ function next() {
 //
 
 function startSeg(targetIndex, auto) {
+  currentFrame = 1;
   currentIndex = targetIndex;
-  startAnimateHighlight();
+  prepMoveHighlight();
+  prepScroll();
+  movingHighlight = true;
   if (auto !== 1) {
     audio.currentTime = segData[currentIndex].start;
     if (audio.paused) {
@@ -73,11 +76,8 @@ function startSeg(targetIndex, auto) {
   }
 }
 
-function startAnimateHighlight() { // Could use some cleanup
-  currentFrame = 1;
-
+function prepMoveHighlight() {
   var seg = segs[currentIndex];
-
   endTop = seg.offsetTop;
   endHt = seg.clientHeight;
   startTop = highlight.offsetTop;
@@ -86,24 +86,30 @@ function startAnimateHighlight() { // Could use some cleanup
   console.log('move highlight to seg ' + currentIndex);
   console.log('change top from ' + startTop + ' to ' + endTop);
   console.log('change height from ' + startHt + ' to ' + endHt);
+}
 
-  if (currentIndex < numSegs - 1) {
+function prepScroll() {
+  startScroll = window.pageYOffset;
+  if (currentIndex === 0) {
+    endScroll = 0;
+    scrolling = true;
+  } else if (currentIndex === numSegs - 1) {
+    var seg = segs[currentIndex];
+    endScroll = seg.offsetTop + seg.clientHeight - window.innerHeight; // Better way?
+    scrolling = true;
+  } else if (currentIndex < numSegs - 1) {
     var nextSeg = segs[currentIndex + 1];
     var nextSegOffset = nextSeg.offsetTop + nextSeg.clientHeight - window.innerHeight - window.pageYOffset;
     if (nextSegOffset > 0) {
-      console.log('nextSegOffset');
-      startScroll = window.pageYOffset;
       endScroll = startScroll + nextSegOffset;
       scrolling = true;
     }
   }
-
-  animating = true;
 }
 
-function animateHighlight() { // Could use some cleanup
-  if (animating) {
-    console.log('animating');
+function animate() { // Could use some cleanup
+  if (movingHighlight) {
+    console.log('movingHighlight');
     currentTop = Math.round(easeOutCubic(startTop, endTop - startTop, currentFrame, totalFrames));
     currentHt = Math.round(easeOutCubic(startHt, endHt - startHt, currentFrame, totalFrames));
     var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px;';
@@ -117,16 +123,16 @@ function animateHighlight() { // Could use some cleanup
     window.scrollTo(0, currentScroll);
   }
 
-  if (animating || scrolling) {
+  if (movingHighlight || scrolling) {
     if (currentFrame < 18) {
       currentFrame += 1;
     } else {
-      animating = false;
+      movingHighlight = false;
       scrolling = false;
     }
   }
 
-  requestAnimationFrame(animateHighlight);
+  requestAnimationFrame(animate);
 }
 
 function easeOutCubic(startValue, changeInValue, currentFrame, totalFrames) {
@@ -237,4 +243,4 @@ text.addEventListener('click', handleTextClick, false);
 
 //
 
-requestAnimationFrame(animateHighlight);
+requestAnimationFrame(animate);
