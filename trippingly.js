@@ -92,6 +92,13 @@ function animateHighlight() {
     currentHt = Math.round(easeOutCubic(startHt, endHt - startHt, currentFrame, totalFrames));
     var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px;';
     highlight.style = cssText;
+    if (window.pageYOffset > currentTop) {
+      window.scrollTo(0, currentTop);
+    }
+    var bottomOffset = currentTop + currentHt - window.innerHeight - window.pageYOffset;
+    if (bottomOffset > 0) {
+      window.scrollBy(0, bottomOffset);
+    }
     if (currentFrame < 18) {
       currentFrame += 1;
     } else {
