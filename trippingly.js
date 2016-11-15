@@ -90,20 +90,34 @@ function prepMoveHighlight() {
 
 function prepScroll() {
   startScroll = window.pageYOffset;
-  if (currentIndex === 0) {
+  endScroll = undefined;
+  // If endscroll gets defined, scrolling = true, otherwise scrolling = false;
+  var windowHt = window.innerHeight;
+  var prevSegOffset = 0;
+  var nextSegOffset = 0;
+
+  if (segs[currentIndex - 1]) {
+    prevSegOffset = segs[currentIndex - 1].offsetTop - startScroll;
+  } else { // currentIndex must be 0, so...
     endScroll = 0;
+  }
+
+  if (segs[currentIndex + 1]) {
+    nextSegOffset = segs[currentIndex + 1].offsetTop + segs[currentIndex + 1].clientHeight - windowHt - startScroll;
+  } else { // currentIndex must be last, so...
+    endScroll = segs[currentIndex].offsetTop + segs[currentIndex].clientHeight - windowHt;
+  }
+
+  if (nextSegOffset > 0) {
+    endScroll = startScroll + nextSegOffset;
+  } else if (prevSegOffset < 0) {
+    endScroll = startScroll + prevSegOffset;
+  }
+
+  // The above works until window is shortened to two lines, then acts funny.
+
+  if (endScroll !== undefined) {
     scrolling = true;
-  } else if (currentIndex === numSegs - 1) {
-    var seg = segs[currentIndex];
-    endScroll = seg.offsetTop + seg.clientHeight - window.innerHeight; // Better way?
-    scrolling = true;
-  } else if (currentIndex < numSegs - 1) {
-    var nextSeg = segs[currentIndex + 1];
-    var nextSegOffset = nextSeg.offsetTop + nextSeg.clientHeight - window.innerHeight - window.pageYOffset;
-    if (nextSegOffset > 0) {
-      endScroll = startScroll + nextSegOffset;
-      scrolling = true;
-    }
   }
 }
 
