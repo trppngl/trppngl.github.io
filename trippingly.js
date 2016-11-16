@@ -90,8 +90,6 @@ function prepMoveHighlight() {
 
 function prepScroll() {
   startScroll = window.pageYOffset;
-  endScroll = undefined;
-  // If endscroll gets defined, scrolling = true, otherwise scrolling = false;
   var windowHt = window.innerHeight;
   var prevSegOffset = 0;
   var nextSegOffset = 0;
@@ -100,30 +98,28 @@ function prepScroll() {
     prevSegOffset = segs[currentIndex - 1].offsetTop - startScroll;
   } else { // currentIndex must be 0, so...
     endScroll = 0;
+    scrolling = true;
   }
 
   if (segs[currentIndex + 1]) {
     nextSegOffset = segs[currentIndex + 1].offsetTop + segs[currentIndex + 1].clientHeight - windowHt - startScroll;
   } else { // currentIndex must be last, so...
     endScroll = segs[currentIndex].offsetTop + segs[currentIndex].clientHeight - windowHt;
+    scrolling = true;
   }
 
   if (nextSegOffset > 0) {
     endScroll = startScroll + nextSegOffset;
+    scrolling = true;
   } else if (prevSegOffset < 0) {
     endScroll = startScroll + prevSegOffset;
-  }
-
-  // The above works until window is shortened to two lines, then acts funny.
-
-  if (endScroll !== undefined) {
     scrolling = true;
   }
 }
 
 function animate() { // Could use some cleanup
   if (movingHighlight) {
-    console.log('movingHighlight');
+    console.log('movingHighlight frame ' + currentFrame);
     currentTop = Math.round(easeOutCubic(startTop, endTop - startTop, currentFrame, totalFrames));
     currentHt = Math.round(easeOutCubic(startHt, endHt - startHt, currentFrame, totalFrames));
     var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px;';
@@ -131,7 +127,7 @@ function animate() { // Could use some cleanup
   }
 
   if (scrolling) {
-    console.log('scrolling');
+    console.log('scrolling frame ' + currentFrame);
     currentScroll = Math.round(easeOutCubic(startScroll, endScroll - startScroll, currentFrame, totalFrames));
     console.log(currentScroll);
     window.scrollTo(0, currentScroll);
