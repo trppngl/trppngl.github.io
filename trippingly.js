@@ -23,13 +23,13 @@ for (i = 0; i < numSegs; i++) {
   });
 }
 
-// Maybe an associative array of all the notes
+var easingMultipliers = [0, 0.03833, 0.11263, 0.22067, 0.34604, 0.46823, 0.57586, 0.66640, 0.74116, 0.80240, 0.85228, 0.89260, 0.92482, 0.95011, 0.96941, 0.98347, 0.99293, 0.99830, 1]
+
+var totalFrames = easingMultipliers.length - 1;
+var currentFrame = 0;
 
 var currentIndex = -1;
 var playAll = 0;
-
-var currentFrame = 0;
-var totalFrames = 18;
 
 var startTop = 0;
 var startHt = 0;
@@ -120,21 +120,21 @@ function prepScroll() {
 function animate() { // Could use some cleanup
   if (movingHighlight) {
     console.log('movingHighlight frame ' + currentFrame);
-    currentTop = Math.round(easeOutCubic(startTop, endTop - startTop, currentFrame, totalFrames));
-    currentHt = Math.round(easeOutCubic(startHt, endHt - startHt, currentFrame, totalFrames));
+    currentTop = Math.round(ease(startTop, endTop));
+    currentHt = Math.round(ease(startHt, endHt));
     var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px;';
     highlight.style = cssText;
   }
 
   if (scrolling) {
     console.log('scrolling frame ' + currentFrame);
-    currentScroll = Math.round(easeOutCubic(startScroll, endScroll - startScroll, currentFrame, totalFrames));
+    currentScroll = Math.round(ease(startScroll, endScroll));
     console.log(currentScroll);
     window.scrollTo(0, currentScroll);
   }
 
   if (movingHighlight || scrolling) {
-    if (currentFrame < 18) {
+    if (currentFrame < totalFrames) {
       currentFrame += 1;
     } else {
       movingHighlight = false;
@@ -145,8 +145,8 @@ function animate() { // Could use some cleanup
   requestAnimationFrame(animate);
 }
 
-function easeOutCubic(startValue, changeInValue, currentFrame, totalFrames) {
-  return changeInValue * (Math.pow(currentFrame / totalFrames - 1, 3) + 1) + startValue;
+function ease(startValue, endValue) {
+  return (endValue - startValue) * easingMultipliers[currentFrame] + startValue;
 }
 
 //
