@@ -28,9 +28,6 @@ var easingMultipliers = [0, 0.03833, 0.11263, 0.22067, 0.34604, 0.46823, 0.57586
 var totalFrames = easingMultipliers.length - 1;
 var currentFrame = 0;
 
-var currentIndex = -1;
-var playAll = 0;
-
 var startTop = 0;
 var startHt = 0;
 var startScroll = 0;
@@ -38,6 +35,9 @@ var endTop = 0;
 var endHt = 0;
 var endScroll = 0;
 
+var currentIndex = -1;
+
+var playAll = false;
 var movingHighlight = false;
 var scrolling = false;
 
@@ -117,7 +117,7 @@ function prepScroll() {
   }
 }
 
-function animate() { // Could use some cleanup
+function animate() {
   if (movingHighlight) {
     console.log('movingHighlight frame ' + currentFrame);
     currentTop = Math.round(ease(startTop, endTop));
@@ -157,10 +157,10 @@ function playAudio() {
 }
 
 function checkStop() {
-  if (audio.currentTime > segData[currentIndex].stop && playAll === 0) {
+  if (audio.currentTime > segData[currentIndex].stop && !playAll) {
     pauseAudio();
   }
-  if (audio.currentTime > segData[currentIndex + 1].start && playAll === 1 && currentIndex < numSegs - 1) {
+  if (audio.currentTime > segData[currentIndex + 1].start && playAll && currentIndex < numSegs - 1) {
     startSeg(currentIndex + 1, 1); // next();
   }
 }
@@ -172,10 +172,10 @@ function pauseAudio() {
 
 function togglePlayAll() {
   if (audio.paused) {
-    playAll = 1;
+    playAll = true;
     next();
   } else {
-    playAll ^= 1;
+    playAll = false;
   }
   togglePlayButton();
 }
@@ -237,13 +237,13 @@ function handleKeydown(e) {
 function jumpHighlight() {
   if (currentIndex >= 0) {
     highlight.className = '';
-    highlighter();
+    highlighter(); // Need to update this.
   }
 }
 
 //
 
-// Debounce resize handler?
+// Debounce resize handler? (Old note, and I've forgotten what it means.)
 
 window.addEventListener('keydown', handleKeydown, false);
 window.addEventListener('resize', jumpHighlight, false);
