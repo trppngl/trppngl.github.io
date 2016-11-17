@@ -38,7 +38,7 @@ var endScroll = 0;
 var currentIndex = -1;
 
 var playAll = false;
-var autoStartSeg = false;
+var userStartSeg = false;
 
 var movingHighlight = false;
 var scrolling = false;
@@ -50,17 +50,17 @@ var linkMode = 'plain';
 function prev() {
   var threshold = segData[currentIndex].start + 0.2; // 300ms gap on phones, so could change to 0.5 or find some way to eliminate that gap
   if (threshold < audio.currentTime) {
-    autoStartSeg = false;
+    userStartSeg = true;
     startSeg(currentIndex);
   } else if (currentIndex > 0) {
-    autoStartSeg = false;
+    userStartSeg = true;
     startSeg(currentIndex - 1);
   }
 }
 
 function next() {
   if (currentIndex < numSegs - 1) {
-    autoStartSeg = false;
+    userStartSeg = true;
     startSeg(currentIndex + 1);
   }
 }
@@ -73,7 +73,7 @@ function startSeg(targetIndex) {
   prepMoveHighlight();
   prepScroll();
   movingHighlight = true;
-  if (!autoStartSeg) {
+  if (userStartSeg) {
     audio.currentTime = segData[currentIndex].start;
     if (audio.paused) {
       playAudio();
@@ -87,10 +87,6 @@ function prepMoveHighlight() {
   endHt = seg.clientHeight;
   startTop = highlight.offsetTop;
   startHt = highlight.clientHeight;
-
-  console.log('move highlight to seg ' + currentIndex);
-  console.log('change top from ' + startTop + ' to ' + endTop);
-  console.log('change height from ' + startHt + ' to ' + endHt);
 }
 
 function prepScroll() {
@@ -99,32 +95,37 @@ function prepScroll() {
   var prevSegOffset = 0;
   var nextSegOffset = 0;
 
-  if (segs[currentIndex - 1]) {
-    prevSegOffset = segs[currentIndex - 1].offsetTop - startScroll;
-  } else { // currentIndex must be 0, so...
-    endScroll = 0;
-    scrolling = true;
-  }
+  // Don't autoscroll if user has scrolled highlight off-screen
+  // Should it be < and > or <== and >==?
 
-  if (segs[currentIndex + 1]) {
-    nextSegOffset = segs[currentIndex + 1].offsetTop + segs[currentIndex + 1].clientHeight - windowHt - startScroll;
-  } else { // currentIndex must be last, so...
-    endScroll = segs[currentIndex].offsetTop + segs[currentIndex].clientHeight - windowHt;
-    scrolling = true;
-  }
+  if (userStartSeg || (startTop < startScroll + windowHt && startTop + startHt > startScroll)) {
 
-  if (nextSegOffset > 0) {
-    endScroll = startScroll + nextSegOffset;
-    scrolling = true;
-  } else if (prevSegOffset < 0) {
-    endScroll = startScroll + prevSegOffset;
-    scrolling = true;
+    if (segs[currentIndex - 1]) {
+      prevSegOffset = segs[currentIndex - 1].offsetTop - startScroll;
+    } else { // currentIndex must be 0, so scroll to top
+      endScroll = 0;
+      scrolling = true;
+    }
+
+    if (segs[currentIndex + 1]) {
+      nextSegOffset = segs[currentIndex + 1].offsetTop + segs[currentIndex + 1].clientHeight - windowHt - startScroll;
+    } else { // currentIndex must be last, so scroll to bottom
+      endScroll = segs[currentIndex].offsetTop + segs[currentIndex].clientHeight - windowHt;
+      scrolling = true;
+    }
+
+    if (nextSegOffset > 0) {
+      endScroll = startScroll + nextSegOffset;
+      scrolling = true;
+    } else if (prevSegOffset < 0) {
+      endScroll = startScroll + prevSegOffset;
+      scrolling = true;
+    }
   }
 }
 
 function animate() {
   if (movingHighlight) {
-    console.log('movingHighlight frame ' + currentFrame);
     currentTop = Math.round(ease(startTop, endTop));
     currentHt = Math.round(ease(startHt, endHt));
     var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px;';
@@ -132,9 +133,7 @@ function animate() {
   }
 
   if (scrolling) {
-    console.log('scrolling frame ' + currentFrame);
     currentScroll = Math.round(ease(startScroll, endScroll));
-    console.log(currentScroll);
     window.scrollTo(0, currentScroll);
   }
 
@@ -166,7 +165,7 @@ function checkStop() {
     pauseAudio();
   }
   if (audio.currentTime > segData[currentIndex + 1].start && playAll && currentIndex < numSegs - 1) {
-    autoStartSeg = true;
+    userStartSeg = false;
     startSeg(currentIndex + 1);
   }
 }
@@ -211,7 +210,7 @@ function writeSegs() {
 
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
-    autoStartSeg = false;
+    userStartSeg = true;
     startSeg(Number(e.target.getAttribute('id')));
   // Here I used to have an else if for links
   }
