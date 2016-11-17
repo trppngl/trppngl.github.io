@@ -38,6 +38,8 @@ var endScroll = 0;
 var currentIndex = -1;
 
 var playAll = false;
+var autoStartSeg = false;
+
 var movingHighlight = false;
 var scrolling = false;
 
@@ -47,28 +49,31 @@ var linkMode = 'plain';
 
 function prev() {
   var threshold = segData[currentIndex].start + 0.2; // 300ms gap on phones, so could change to 0.5 or find some way to eliminate that gap
-  if (audio.currentTime > threshold) {
+  if (threshold < audio.currentTime) {
+    autoStartSeg = false;
     startSeg(currentIndex);
   } else if (currentIndex > 0) {
+    autoStartSeg = false;
     startSeg(currentIndex - 1);
   }
 }
 
 function next() {
   if (currentIndex < numSegs - 1) {
+    autoStartSeg = false;
     startSeg(currentIndex + 1);
   }
 }
 
 //
 
-function startSeg(targetIndex, auto) {
+function startSeg(targetIndex) {
   currentFrame = 1;
   currentIndex = targetIndex;
   prepMoveHighlight();
   prepScroll();
   movingHighlight = true;
-  if (auto !== 1) {
+  if (!autoStartSeg) {
     audio.currentTime = segData[currentIndex].start;
     if (audio.paused) {
       playAudio();
@@ -161,7 +166,8 @@ function checkStop() {
     pauseAudio();
   }
   if (audio.currentTime > segData[currentIndex + 1].start && playAll && currentIndex < numSegs - 1) {
-    startSeg(currentIndex + 1, 1); // next();
+    autoStartSeg = true;
+    startSeg(currentIndex + 1);
   }
 }
 
@@ -175,7 +181,7 @@ function togglePlayAll() {
     playAll = true;
     next();
   } else {
-    playAll = false;
+    playAll = !playAll;
   }
   togglePlayButton();
 }
@@ -205,6 +211,7 @@ function writeSegs() {
 
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
+    autoStartSeg = false;
     startSeg(Number(e.target.getAttribute('id')));
   // Here I used to have an else if for links
   }
