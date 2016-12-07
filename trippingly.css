@@ -21,7 +21,7 @@ p {
 
 #highlight {
   position: absolute;
-  width: 550px; /* used to be 100%, changed in geneva */
+  width: 550px; /* Used to be 100%, changed in Geneva */
   background-color: #fffbf1;
   z-index: -1;
 }
@@ -30,10 +30,18 @@ p {
   transition: top 300ms, height 300ms;
 }
 
+/* Playing with #6bb3a7 and #aaa for vocab links */
+
 span.v1 {
-  color: #00a690;
+  background-image: linear-gradient(to right, #aaa 100%, transparent 0%);
+  background-position: 0 24px;
+  background-repeat: repeat-x;
+  background-size: 2px 1px;
 }
 
 span.v2 {
-  color: #007360;
+  background-image: linear-gradient(to right, #aaa 100%, transparent 0%);
+  background-position: 0 24px;
+  background-repeat: repeat-x;
+  background-size: 2px 1px;
 }

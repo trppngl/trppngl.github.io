@@ -153,13 +153,25 @@ function ease(startValue, endValue) {
   return (endValue - startValue) * easingMultipliers[currentFrame] + startValue;
 }
 
+/*
+
+This is the Penner easeOutCubic function that I was using before. With current easing multipliers, highlight lags scroll when holding down left or right arrow keys. That doesn't happen with this function. Not sure what the difference is.
+
+function ease(startValue, endValue) {
+  return (endValue - startValue) * (Math.pow(currentFrame / totalFrames - 1, 3) + 1) + startValue;
+}
+
+*/
+
 //
 
 function playAudio() {
   audio.play();
-  timer = window.setInterval(checkStop, 20);
+  audioTimer = window.setInterval(checkStop, 20);
 }
 
+
+// Make it so at the end of the recording, playAll changes to false?
 function checkStop() {
   if (audio.currentTime > segData[currentIndex].stop && !playAll) {
     pauseAudio();
@@ -172,7 +184,7 @@ function checkStop() {
 
 function pauseAudio() {
   audio.pause();
-  window.clearInterval(timer);
+  window.clearInterval(audioTimer);
 }
 
 function togglePlayAll() {
@@ -240,19 +252,12 @@ function handleKeydown(e) {
   }
 }
 
-function jumpHighlight() {
-  if (currentIndex >= 0) {
-    highlight.className = '';
-    highlighter(); // Need to update this.
-  }
-}
-
 //
 
 // Debounce resize handler? (Old note, and I've forgotten what it means.)
 
 window.addEventListener('keydown', handleKeydown, false);
-window.addEventListener('resize', jumpHighlight, false);
+// window.addEventListener('resize', jumpHighlight, false);
 // window.addEventListener('hashchange', hashNote, false);
 
 text.addEventListener('click', handleTextClick, false);
