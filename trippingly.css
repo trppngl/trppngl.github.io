@@ -1,16 +1,43 @@
 body {
   color: #333;
-  background-color: #fff;
+  background: #fff;
   font-family: 'Linux Libertine', serif;
   font-feature-settings: 'onum' 1;
   margin: 0;
+}
+
+#container {
+  display: flex;
+}
+
+#left {
+  background: lightblue;
+  flex: 1;
 }
 
 #text {
   font-size: 24px;
   text-align: center;
   max-width: 550px;
-  margin: 0 auto;
+  flex: 2;
+}
+
+#note-pane {
+  background: lightblue;
+  flex: 1;
+}
+
+.note {
+  font-size: 24px;
+  display: none;
+}
+
+.note.v {
+  background: pink;
+}
+
+.note.g {
+  background: lightyellow;
 }
 
 p {
@@ -19,31 +46,25 @@ p {
   padding: 0.25em; /* 6px, look into this */
 }
 
+/* Look into width. Think it's relative to the entire window, because position is set to absolute (for vertical positioning to work. The current width of 60% is just a number that seems to work, not very satisfying. Was 50%, which would seem right given the 1:2:1 flexbox layout, but it was two short when window was resized very narrow. Maybe something to do with the scrollbar?) */
+
 #highlight {
   position: absolute;
-  width: 550px; /* Used to be 100%, changed in Geneva */
-  background-color: #fffbf1;
+  width: 60%;
+  background: #fffbf1;
   z-index: -1;
 }
 
-.slow {
-  transition: top 300ms, height 300ms;
-}
-
-/* Playing with #6bb3a7 and #aaa for vocab links */
-
-/* Find out more about linear gradients and why this works? */
-
 span.v {
-  background-image: linear-gradient(to right, #6bb3a7 100%, transparent 0%);
+  background-image: linear-gradient(#6bb3a7, #6bb3a7);
   background-position: 0 24px;
+  background-size: 1px 1px;
   background-repeat: repeat-x;
-  background-size: 2px 1px;
 }
 
 span.g {
-  background-image: linear-gradient(to right, #aaa 100%, transparent 0%);
+  background-image: linear-gradient(#aaa, #aaa);
   background-position: 0 24px;
+  background-size: 1px 1px;
   background-repeat: repeat-x;
-  background-size: 2px 1px;
 }

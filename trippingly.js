@@ -37,6 +37,8 @@ var endScroll = 0;
 
 var currentIndex = -1;
 
+var currentNote = null;
+
 var playAll = false;
 var userStartSeg = false;
 
@@ -218,13 +220,31 @@ function writeSegs() {
   }
 }
 
+// Notes
+
+function toggleNote(targetNote) {
+  if (currentNote === targetNote) {
+    currentNote.style = 'display: none';
+    currentNote = null;
+  } else if (currentNote === null) {
+    currentNote = targetNote;
+    currentNote.style = 'display: block';
+  } else {
+    currentNote.style = 'display: none';
+    currentNote = targetNote;
+    currentNote.style = 'display: block';
+  }
+}
+
 //
 
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
     userStartSeg = true;
     startSeg(Number(e.target.getAttribute('id')));
-  // Here I used to have an else if for links
+  } else if (e.target.tagName.toLowerCase() === 'span') { // Other text spans?
+    toggleNote(document.getElementById(e.target.getAttribute('data-note')));
+    // Too much in above line?
   }
 }
 
