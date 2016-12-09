@@ -199,6 +199,8 @@ function toggleLinkMode(input) {
     linkMode = input;
   }
   writeSegs();
+  hideCurrentNote();
+  currentNote = null;
 }
 
 function writeSegs() {
@@ -213,15 +215,21 @@ function writeSegs() {
 
 // Notes
 
+// toggleLinkMode() should close any open notes. It could call a function closeNote() that could also be called from here.
+
 function toggleNote(targetNote) {
-  if (currentNote) {
-    currentNote.style = 'display: none';
-  }
+  hideCurrentNote();
   if (currentNote === targetNote) {
     currentNote = null;
   } else {
     currentNote = targetNote;
     currentNote.style = 'display: block';
+  }
+}
+
+function hideCurrentNote() {
+  if (currentNote) {
+    currentNote.style = 'display: none';
   }
 }
 
