@@ -23,7 +23,7 @@ body {
 }
 
 #note-pane {
-  background: lightblue;
+  background: #fff;
   flex: 1;
 }
 
@@ -33,11 +33,11 @@ body {
 }
 
 .note.v {
-  background: pink;
+  color: #6bb3a7;
 }
 
 .note.g {
-  background: lightyellow;
+  color: #aaa;
 }
 
 p {
@@ -54,6 +54,8 @@ p {
   background: #fffbf1;
   z-index: -1;
 }
+
+/* #6bb3a7 */
 
 span.v {
   background-image: linear-gradient(#6bb3a7, #6bb3a7);

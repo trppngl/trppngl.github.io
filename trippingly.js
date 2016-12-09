@@ -49,8 +49,10 @@ var linkMode = 'plain';
 
 //
 
+// 300ms gap on phones, so could change 0.2 to 0.5 or find some way to eliminate that gap
+
 function prev() {
-  var threshold = segData[currentIndex].start + 0.2; // 300ms gap on phones, so could change to 0.5 or find some way to eliminate that gap
+  var threshold = segData[currentIndex].start + 0.2;
   if (threshold < audio.currentTime) {
     userStartSeg = true;
     startSeg(currentIndex);
@@ -155,23 +157,12 @@ function ease(startValue, endValue) {
   return (endValue - startValue) * easingMultipliers[currentFrame] + startValue;
 }
 
-/*
-
-This is the Penner easeOutCubic function that I was using before. With current easing multipliers, highlight lags scroll when holding down left or right arrow keys. That doesn't happen with this function. Not sure what the difference is.
-
-function ease(startValue, endValue) {
-  return (endValue - startValue) * (Math.pow(currentFrame / totalFrames - 1, 3) + 1) + startValue;
-}
-
-*/
-
 //
 
 function playAudio() {
   audio.play();
   audioTimer = window.setInterval(checkStop, 20);
 }
-
 
 // Make it so at the end of the recording, playAll changes to false?
 function checkStop() {
@@ -223,20 +214,18 @@ function writeSegs() {
 // Notes
 
 function toggleNote(targetNote) {
+  if (currentNote) {
+    currentNote.style = 'display: none';
+  }
   if (currentNote === targetNote) {
-    currentNote.style = 'display: none';
     currentNote = null;
-  } else if (currentNote === null) {
-    currentNote = targetNote;
-    currentNote.style = 'display: block';
   } else {
-    currentNote.style = 'display: none';
     currentNote = targetNote;
     currentNote.style = 'display: block';
   }
 }
 
-//
+// Event handlers
 
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
@@ -272,7 +261,7 @@ function handleKeydown(e) {
   }
 }
 
-//
+// Event listeners
 
 // Debounce resize handler? (Old note, and I've forgotten what it means.)
 
