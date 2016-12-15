@@ -47,6 +47,7 @@ var currentNote = null;
 
 var playAll = false;
 var userStartSeg = false;
+var hardStartSeg = false;
 
 var movingHighlight = false;
 var scrolling = false;
@@ -160,7 +161,7 @@ function animate() {
 
 function ease(startValue, endValue) { // Break into two functions?
   var easingFunction;
-  if (userStartSeg) {
+  if (hardStartSeg) {
     easingFunction = 'default';
   } else {
     easingFunction = 'easeInOut';
@@ -253,6 +254,7 @@ function showCurrentNote() {
 function handleTextClick(e) {
   if (e.target.classList.contains('seg')) {
     userStartSeg = true;
+    hardStartSeg = true;
     startSeg(Number(e.target.getAttribute('id')));
   } else if (e.target.tagName.toLowerCase() === 'span') { // Other text spans?
     currentLink = e.target;
@@ -264,13 +266,16 @@ function handleTextClick(e) {
 function handleKeydown(e) {
   switch(e.keyCode) {
     case 37:
+      hardStartSeg = true;
       prev();
       break;
     case 39:
+      hardStartSeg = true;
       next();
       break;
     case 32:
       e.preventDefault(); // So browser doesn't jump to bottom
+      hardStartSeg = false;
       togglePlayAll();
       break;
     case 86:

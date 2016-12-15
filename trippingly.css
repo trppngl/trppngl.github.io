@@ -42,7 +42,7 @@ body {
 }
 
 .note.v {
-  color: #004035;
+  color: #006453;
 }
 
 .note.g {
@@ -67,8 +67,8 @@ span.v {
 }
 
 span.v:hover {
-  background-image: linear-gradient(#6bb3a7, #6bb3a7);
-  color: #004035;
+  background-image: linear-gradient(#fff, #fff);
+  color: #006453;
 }
 
 span.g {
