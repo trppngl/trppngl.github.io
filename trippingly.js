@@ -158,8 +158,15 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-function ease(startValue, endValue, easingFunction) {
-  return (endValue - startValue) * easingMultipliers.default[currentFrame] + startValue;
+function ease(startValue, endValue) { // Break into two functions?
+  var easingFunction;
+  if (userStartSeg) {
+    easingFunction = 'default';
+  } else {
+    easingFunction = 'easeInOut';
+  }
+  console.log(easingFunction);
+  return (endValue - startValue) * easingMultipliers[easingFunction][currentFrame] + startValue;
 }
 
 //
