@@ -102,15 +102,14 @@ function prepMoveHighlight() {
 }
 
 function prepScroll() {
-  startScroll = window.pageYOffset;
-  var windowHt = window.innerHeight;
   var prevSegOffset = 0;
   var nextSegOffset = 0;
+  var windowHt = window.innerHeight;
+  startScroll = window.pageYOffset;
 
-  // Don't autoscroll if user has scrolled highlight off-screen
-  // Should it be < and > or <== and >==?
+  // Only consider scrolling if segment change initiated by user or if some part of highlight will be in view at some point during change. Allows user to scroll away from autoscrolling highlight without being yanked back.
 
-  if (userStartSeg || (startTop < startScroll + windowHt && startTop + startHt > startScroll)) {
+  if (userStartSeg || (endTop + endHt > startScroll && startTop < startScroll + windowHt)) {
 
     if (segs[currentIndex - 1]) {
       prevSegOffset = segs[currentIndex - 1].offsetTop - startScroll;
@@ -173,7 +172,7 @@ function playAudio() {
 }
 
 function checkStop() {
-  if (audio.currentTime > segData[currentIndex].stop && !playAll | currentIndex === numSegs - 1) {
+  if (audio.currentTime > segData[currentIndex].stop && (!playAll || currentIndex === numSegs - 1)) {
     pauseAudio();
     playAll = false;
   } else if (audio.currentTime > segData[currentIndex + 1].start) {
