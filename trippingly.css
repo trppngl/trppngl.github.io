@@ -1,9 +1,17 @@
 body {
-  color: #333;
   background: #fff;
   font-family: 'Linux Libertine', serif;
   font-feature-settings: 'onum' 1;
   margin: 0;
+}
+
+/* Look into width. Think it's relative to the entire window, because position is set to absolute (for vertical positioning to work. The current width of 60% is just a number that seems to work, not very satisfying. Was 50%, which would seem right given the 1:2:1 flexbox layout, but it was two short when window was resized very narrow. Maybe something to do with the scrollbar?) */
+
+#highlight {
+  position: absolute;
+  width: 60%;
+  background: #fffbf1;
+  z-index: -1;
 }
 
 #container {
@@ -16,6 +24,7 @@ body {
 }
 
 #text {
+  color: #333;
   font-size: 24px;
   text-align: center;
   max-width: 550px;
@@ -33,11 +42,11 @@ body {
 }
 
 .note.v {
-  color: #6bb3a7;
+  color: #004035;
 }
 
 .note.g {
-  color: #aaa;
+  color: #444;
 }
 
 p {
@@ -46,27 +55,22 @@ p {
   padding: 0.25em; /* 6px, look into this */
 }
 
-/* Look into width. Think it's relative to the entire window, because position is set to absolute (for vertical positioning to work. The current width of 60% is just a number that seems to work, not very satisfying. Was 50%, which would seem right given the 1:2:1 flexbox layout, but it was two short when window was resized very narrow. Maybe something to do with the scrollbar?) */
-
-#highlight {
-  position: absolute;
-  width: 60%;
-  background: #fffbf1;
-  z-index: -1;
-}
-
-/* #6bb3a7 */
-
-span.v {
-  background-image: linear-gradient(#6bb3a7, #6bb3a7);
+span {
   background-position: 0 24px;
   background-size: 1px 1px;
   background-repeat: repeat-x;
+  cursor: pointer;
+}
+
+span.v {
+  background-image: linear-gradient(#6bb3a7, #6bb3a7);
+}
+
+span.v:hover {
+  background-image: linear-gradient(#6bb3a7, #6bb3a7);
+  color: #004035;
 }
 
 span.g {
   background-image: linear-gradient(#aaa, #aaa);
-  background-position: 0 24px;
-  background-size: 1px 1px;
-  background-repeat: repeat-x;
 }

@@ -23,7 +23,14 @@ for (i = 0; i < numSegs; i++) {
   });
 }
 
-var easingMultipliers = [0, 0.03833, 0.11263, 0.22067, 0.34604, 0.46823, 0.57586, 0.66640, 0.74116, 0.80240, 0.85228, 0.89260, 0.92482, 0.95011, 0.96941, 0.98347, 0.99293, 0.99830, 1]
+// (.25,.1,.25,1) CSS ease (default)
+var easingMultipliers = [0.00000, 0.01609, 0.04954, 0.10135, 0.17118, 0.25662, 0.35293, 0.45381, 0.55285, 0.64498, 0.72703, 0.79756, 0.85630, 0.90371, 0.94056, 0.96775, 0.98616, 0.99666, 1.00000]
+
+// (.335,.05,.415,1) Exactly halfway between CSS ease (default) and CSS ease-in-out
+// var easingMultipliers = [0.00000, 0.08640, 0.17951, 0.27816, 0.37989, 0.48082, 0.57643, 0.66281, 0.73770, 0.80059, 0.85216, 0.89365, 0.92643, 0.95177, 0.97078, 0.98440, 0.99340, 0.99843, 1.00000]
+
+// (.42,0,.58,1) CSS ease-in-out
+// var easingMultipliers = [0.00000, 0.00598, 0.02445, 0.05613, 0.10142, 0.16023, 0.23177, 0.31429, 0.40496, 0.50000, 0.59504, 0.68571, 0.76823, 0.83977, 0.89858, 0.94387, 0.97555, 0.99402, 1.00000]
 
 var totalFrames = easingMultipliers.length - 1;
 var currentFrame = 0;
@@ -37,6 +44,7 @@ var endScroll = 0;
 
 var currentIndex = -1;
 
+var currentLink = null;
 var currentNote = null;
 
 var playAll = false;
@@ -53,7 +61,7 @@ var linkMode = 'plain';
 
 function prev() {
   var threshold = segData[currentIndex].start + 0.2;
-  if (threshold < audio.currentTime) {
+  if (audio.currentTime > threshold) {
     userStartSeg = true;
     startSeg(currentIndex);
   } else if (currentIndex > 0) {
@@ -164,12 +172,11 @@ function playAudio() {
   audioTimer = window.setInterval(checkStop, 20);
 }
 
-// Make it so at the end of the recording, playAll changes to false?
 function checkStop() {
-  if (audio.currentTime > segData[currentIndex].stop && !playAll) {
+  if (audio.currentTime > segData[currentIndex].stop && !playAll | currentIndex === numSegs - 1) {
     pauseAudio();
-  }
-  if (audio.currentTime > segData[currentIndex + 1].start && playAll && currentIndex < numSegs - 1) {
+    playAll = false;
+  } else if (audio.currentTime > segData[currentIndex + 1].start) {
     userStartSeg = false;
     startSeg(currentIndex + 1);
   }
@@ -199,6 +206,7 @@ function toggleLinkMode(input) {
     linkMode = input;
   }
   writeSegs();
+
   hideCurrentNote();
   currentNote = null;
 }
@@ -223,7 +231,7 @@ function toggleNote(targetNote) {
     currentNote = null;
   } else {
     currentNote = targetNote;
-    currentNote.style = 'display: block';
+    showCurrentNote();
   }
 }
 
@@ -233,6 +241,9 @@ function hideCurrentNote() {
   }
 }
 
+function showCurrentNote() {
+  currentNote.style = 'display: block';
+}
 // Event handlers
 
 function handleTextClick(e) {
@@ -240,7 +251,8 @@ function handleTextClick(e) {
     userStartSeg = true;
     startSeg(Number(e.target.getAttribute('id')));
   } else if (e.target.tagName.toLowerCase() === 'span') { // Other text spans?
-    toggleNote(document.getElementById(e.target.getAttribute('data-note')));
+    currentLink = e.target;
+    toggleNote(document.getElementById(currentLink.getAttribute('data-note')));
     // Too much in above line?
   }
 }
