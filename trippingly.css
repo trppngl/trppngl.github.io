@@ -9,9 +9,9 @@ body {
 
 #highlight {
   position: absolute;
-  width: 60%;
+  width: 550px;
   background: #fffbf1;
-  z-index: -1;
+  mix-blend-mode: multiply; /* Need fallback for IE and other browsers */
 }
 
 #container {
