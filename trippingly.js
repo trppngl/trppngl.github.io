@@ -24,9 +24,9 @@ for (i = 0; i < numSegs; i++) {
 }
 
 var easingMultipliers = {
-  // (.25,.1,.25,1) CSS transition ease (default)
+  // (.25,.1,.25,1)
   default: [0.00000, 0.03833, 0.11263, 0.22067, 0.34604, 0.46823, 0.57586, 0.66640, 0.74116, 0.80240, 0.85228, 0.89260, 0.92482, 0.95011, 0.96941, 0.98347, 0.99293, 0.99830, 1.00000],
-  // (.42,0,.58,1) CSS transition easeInOut
+  // (.42,0,.58,1)
   easeInOut: [0.00000, 0.00598, 0.02445, 0.05613, 0.10142, 0.16023, 0.23177, 0.31429, 0.40496, 0.50000, 0.59504, 0.68571, 0.76823, 0.83977, 0.89858, 0.94387, 0.97555, 0.99402, 1.00000]
 };
 
@@ -53,6 +53,8 @@ var movingHighlight = false;
 var scrolling = false;
 
 var linkMode = 'plain';
+
+var supportsMixBlendMode = window.getComputedStyle(document.body).mixBlendMode;
 
 //
 
@@ -228,8 +230,6 @@ function writeSegs() {
 
 // Notes
 
-// toggleLinkMode() should close any open notes. It could call a function closeNote() that could also be called from here.
-
 function toggleNote(targetNote) {
   hideCurrentNote();
   if (currentNote === targetNote) {
@@ -249,6 +249,7 @@ function hideCurrentNote() {
 function showCurrentNote() {
   currentNote.style = 'display: block';
 }
+
 // Event handlers
 
 function handleTextClick(e) {

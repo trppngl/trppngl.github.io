@@ -11,7 +11,9 @@ body {
   position: absolute;
   width: 550px;
   background: #fffbf1;
-  mix-blend-mode: multiply; /* Need fallback for IE and other browsers */
+  /* Fallback needed for next two lines */
+  mix-blend-mode: multiply;
+  pointer-events: none; /* Pointer events pass through highlight to elements underneath */
 }
 
 #container {
@@ -24,6 +26,7 @@ body {
 }
 
 #text {
+  line-height: 1.5;
   color: #333;
   font-size: 24px;
   text-align: center;
@@ -50,12 +53,11 @@ body {
 }
 
 p {
-  line-height: 1.5;
   margin: 0;
   padding: 0.25em; /* 6px, look into this */
 }
 
-span {
+span.link {
   background-position: 0 24px;
   background-size: 1px 1px;
   background-repeat: repeat-x;
