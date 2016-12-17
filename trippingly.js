@@ -201,7 +201,6 @@ function togglePlayAll() {
   } else {
     playAll = !playAll;
   }
-  togglePlayButton();
 }
 
 // Links
