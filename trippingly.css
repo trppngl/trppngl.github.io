@@ -57,8 +57,12 @@ p {
   padding: 0.25em; /* 6px, look into this */
 }
 
+span {
+  display: inline-block;
+}
+
 span.link {
-  background-position: 0 24px;
+  background-position: 0 1.2em;
   background-size: 1px 1px;
   background-repeat: repeat-x;
   cursor: pointer;

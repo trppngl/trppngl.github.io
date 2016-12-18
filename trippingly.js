@@ -16,7 +16,7 @@ for (i = 0; i < numSegs; i++) {
   segData.push({
     'start': Number(times[0]),
     'stop': Number(times[1]),
-    'plain': seg.textContent,
+    'plain': seg.innerHTML,
     'v': seg.getAttribute('data-v'),
     'p': seg.getAttribute('data-p'),
     'g': seg.getAttribute('data-g')
