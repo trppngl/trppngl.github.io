@@ -1,77 +1,107 @@
+$background-color: #fff;
+$text-color: #2b2b2b;
+$highlight-color: #fffbf1;
+
+$lavender-color: #f2f2ff;
+$lavender-underline: #bfbfff;
+
+$v-color: $lavender-color;
+$v-underline: $lavender-underline;
+
 body {
-  background: #fff;
-  color: #2b2b2b;
+  background: $background-color;
+  color: $text-color;
   font-family: 'Linux Libertine', serif;
   font-feature-settings: 'onum' 1;
-  margin: 0; }
+  margin: 0;
+}
 
 /* Look into width. Think it's relative to the entire window, because position is set to absolute (for vertical positioning to work. The current width of 60% is just a number that seems to work, not very satisfying. Was 50%, which would seem right given the 1:2:1 flexbox layout, but it was two short when window was resized very narrow. Maybe something to do with the scrollbar?) */
+
 #highlight {
   position: absolute;
   width: 550px;
-  background: #fffbf1;
+  background: $highlight-color;
   /* Fallback needed for next two lines */
   mix-blend-mode: multiply;
-  pointer-events: none;
-  /* Pointer events pass through highlight to elements underneath */ }
+  pointer-events: none; /* Pointer events pass through highlight to elements underneath */
+}
 
 #container {
-  display: flex; }
+  display: flex;
+}
 
 #left {
-  flex: 1; }
+  flex: 1;
+}
 
 #text {
   line-height: 1.5;
   font-size: 24px;
   text-align: center;
   max-width: 550px;
-  flex: 2; }
+  flex: 2;
+}
 
 #note-pane {
-  flex: 1; }
+  flex: 1;
+}
 
 .note {
-  display: none; }
+  display: none;
+}
+
+.note.v {
+}
 
 .note.g {
-  color: #444; }
+  color: #444;
+}
 
 p {
   margin: 0;
-  padding: 0.25em;
-  /* 6px, look into this */
-  cursor: context-menu; }
+  padding: 0.25em; /* 6px, look into this */
+  cursor: context-menu;
+}
 
 span {
-  display: inline-block; }
+  display: inline-block;
+}
 
 span.link {
   background-position: 0 1.2em;
   background-size: 1px 1px;
   background-repeat: repeat-x;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 span.v {
-  background-image: linear-gradient(#bfbfff, #bfbfff); }
+  background-image: linear-gradient($v-underline, $v-underline);
+}
+
+span.v:hover {
+}
 
 span.g {
-  background-image: linear-gradient(#aaa, #aaa); }
+  background-image: linear-gradient(#aaa, #aaa);
+}
 
 #outer-box {
   position: absolute;
   margin: 12px 24px;
-  background: #f2f2ff;
+  background: $v-color;
   height: 500px;
   width: 300px;
-  mix-blend-mode: multiply; }
+  mix-blend-mode: multiply;
+}
 
 #headword-box {
   position: absolute;
   /* background: $v-color; */
   height: 100px;
   width: 300px;
-  mix-blend-mode: multiply; }
+  mix-blend-mode: multiply;
+}
 
 #tall-box {
   position: absolute;
@@ -79,7 +109,8 @@ span.g {
   /* background: $v-color; */
   height: 500px;
   width: 276px;
-  mix-blend-mode: multiply; }
+  mix-blend-mode: multiply;
+}
 
 #wide-box {
   position: absolute;
@@ -87,7 +118,8 @@ span.g {
   /* background: $v-color; */
   height: 476px;
   width: 300px;
-  mix-blend-mode: multiply; }
+  mix-blend-mode: multiply;
+}
 
 #text-box {
   position: absolute;
@@ -96,17 +128,18 @@ span.g {
   height: 476px;
   width: 252px;
   mix-blend-mode: multiply;
-  padding: 0 12px; }
+  padding: 0 12px;
+}
 
 #headword {
   position: relative;
   font-size: 36px;
   font-feature-settings: 'onum' 1;
-  margin: 6px 0 0 0; }
+  margin: 6px 0 0 0;
+}
 
 #note-text {
   position: relative;
   font-size: 22px;
-  font-feature-settings: 'onum' 1; }
-
-/*# sourceMappingURL=trippingly.css.map */
+  font-feature-settings: 'onum' 1;
+}
