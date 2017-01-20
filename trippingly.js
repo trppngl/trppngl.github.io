@@ -53,6 +53,7 @@ var hardStartSeg = false;
 
 var movingHighlight = false;
 var scrolling = false;
+var resized = false;
 
 var linkMode = 'plain';
 
@@ -151,6 +152,14 @@ function animate() {
   if (scrolling) {
     currentScroll = Math.round(ease(startScroll, endScroll));
     window.scrollTo(0, currentScroll);
+  }
+
+  // Quick and dirty
+  if (resized === true) {
+    console.log(highlightWidth);
+    var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px; width: ' + highlightWidth + 'px;';
+    highlight.style = cssText;
+    resized = false;
   }
 
   if (movingHighlight || scrolling) {
@@ -296,15 +305,17 @@ function handleKeydown(e) {
 }
 
 function handleResize() {
+  resized = true;
+  highlightWidth = text.clientWidth;
 }
 
 // Event listeners
 
 window.addEventListener('keydown', handleKeydown, false);
+window.addEventListener('resize', handleResize, false);
 // window.addEventListener('hashchange', hashNote, false);
 
 text.addEventListener('click', handleTextClick, false);
-text.addEventListener('resize', handleResize, false);
 
 //
 

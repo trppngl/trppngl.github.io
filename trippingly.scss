@@ -23,8 +23,6 @@ body {
   background-size: 100% 1em;
 }
 
-/* Look into width. Think it's relative to the entire window, because position is set to absolute (for vertical positioning to work. The current width of 60% is just a number that seems to work, not very satisfying. Was 50%, which would seem right given the 1:2:1 flexbox layout, but it was two short when window was resized very narrow. Maybe something to do with the scrollbar?) */
-
 #highlight {
   position: absolute;
   background: $highlight-color;
@@ -67,7 +65,7 @@ body {
 
 p {
   margin: 0;
-  padding: 0.25em;
+  padding: 0.25em 0.5em;
 }
 
 span {
