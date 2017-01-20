@@ -158,8 +158,11 @@ function animate() {
   if (resizing === true) {
     highlightWidth = text.clientWidth;
     var seg = segs[currentIndex];
-    endHt = seg.clientHeight;
-    var cssText = 'top: ' + currentTop + 'px; height: ' + endHt + 'px; width: ' + highlightWidth + 'px;';
+    var tempTop = seg.offsetTop;
+    var tempHt = seg.clientHeight;
+    var tempScrollOffset = tempTop - currentTop;
+    console.log(tempScrollOffset);
+    var cssText = 'top: ' + (currentTop + tempScrollOffset) + 'px; height: ' + tempHt + 'px; width: ' + highlightWidth + 'px;';
     highlight.style = cssText;
     resizing = false;
   }
