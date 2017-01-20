@@ -160,10 +160,12 @@ function animate() {
     var seg = segs[currentIndex];
     var tempTop = seg.offsetTop;
     var tempHt = seg.clientHeight;
-    var tempScrollOffset = tempTop - currentTop;
+    var tempScrollOffset = currentTop - tempTop;
+    currentTop -= tempScrollOffset;
     console.log(tempScrollOffset);
-    var cssText = 'top: ' + (currentTop + tempScrollOffset) + 'px; height: ' + tempHt + 'px; width: ' + highlightWidth + 'px;';
+    var cssText = 'top: ' + currentTop + 'px; height: ' + tempHt + 'px; width: ' + highlightWidth + 'px;';
     highlight.style = cssText;
+    window.scrollBy(0, (tempScrollOffset * -1));
     resizing = false;
   }
 
