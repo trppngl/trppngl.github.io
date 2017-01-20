@@ -53,7 +53,7 @@ var hardStartSeg = false;
 
 var movingHighlight = false;
 var scrolling = false;
-var resized = false;
+var resizing = false;
 
 var linkMode = 'plain';
 
@@ -155,11 +155,13 @@ function animate() {
   }
 
   // Quick and dirty
-  if (resized === true) {
-    console.log(highlightWidth);
-    var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px; width: ' + highlightWidth + 'px;';
+  if (resizing === true) {
+    highlightWidth = text.clientWidth;
+    var seg = segs[currentIndex];
+    endHt = seg.clientHeight;
+    var cssText = 'top: ' + currentTop + 'px; height: ' + endHt + 'px; width: ' + highlightWidth + 'px;';
     highlight.style = cssText;
-    resized = false;
+    resizing = false;
   }
 
   if (movingHighlight || scrolling) {
@@ -305,8 +307,7 @@ function handleKeydown(e) {
 }
 
 function handleResize() {
-  resized = true;
-  highlightWidth = text.clientWidth;
+  resizing = true;
 }
 
 // Event listeners
