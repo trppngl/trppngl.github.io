@@ -10,7 +10,7 @@ segs.push.apply(segs, document.getElementsByClassName('seg'));
 var numSegs = segs.length;
 
 var segData = [];
-for (i = 0; i < numSegs; i++) {
+for (i = 0; i < numSegs; i += 1) {
   var seg = segs[i];
   var times = seg.getAttribute('data-times').split(' ');
   segData.push({
@@ -25,7 +25,7 @@ for (i = 0; i < numSegs; i++) {
 
 var easingMultipliers = {
   // (.25,.1,.25,1)
-  default: [0.00000, 0.03833, 0.11263, 0.22067, 0.34604, 0.46823, 0.57586, 0.66640, 0.74116, 0.80240, 0.85228, 0.89260, 0.92482, 0.95011, 0.96941, 0.98347, 0.99293, 0.99830, 1.00000],
+  defaultEase: [0.00000, 0.03833, 0.11263, 0.22067, 0.34604, 0.46823, 0.57586, 0.66640, 0.74116, 0.80240, 0.85228, 0.89260, 0.92482, 0.95011, 0.96941, 0.98347, 0.99293, 0.99830, 1.00000],
   // (.42,0,.58,1)
   easeInOut: [0.00000, 0.00598, 0.02445, 0.05613, 0.10142, 0.16023, 0.23177, 0.31429, 0.40496, 0.50000, 0.59504, 0.68571, 0.76823, 0.83977, 0.89858, 0.94387, 0.97555, 0.99402, 1.00000]
 };
@@ -164,7 +164,7 @@ function animate() {
 function ease(startValue, endValue) { // Break into two functions?
   var easingFunction;
   if (hardStartSeg) {
-    easingFunction = 'default';
+    easingFunction = 'defaultEase';
   } else {
     easingFunction = 'easeInOut';
   }
@@ -185,6 +185,7 @@ function checkStop() {
     playAll = false;
   } else if (audio.currentTime > segData[currentIndex + 1].start) {
     userStartSeg = false;
+    hardStartSeg = false;
     startSeg(currentIndex + 1);
   }
 }
@@ -218,11 +219,11 @@ function toggleLinkMode(input) {
 }
 
 function writeSegs() {
-  for (i = 0; i < numSegs; i++) {
+  for (i = 0; i < numSegs; i += 1) {
     if (segData[i][linkMode]) {
       segs[i].innerHTML = segData[i][linkMode];
     } else {
-      segs[i].innerHTML = segData[i]['plain'];
+      segs[i].innerHTML = segData[i].plain;
     }
   }
 }
@@ -290,15 +291,16 @@ function handleKeydown(e) {
   }
 }
 
+function handleResize() {
+}
+
 // Event listeners
 
-// Debounce resize handler? (Old note, and I've forgotten what it means.)
-
 window.addEventListener('keydown', handleKeydown, false);
-// window.addEventListener('resize', jumpHighlight, false);
 // window.addEventListener('hashchange', hashNote, false);
 
 text.addEventListener('click', handleTextClick, false);
+text.addEventListener('resize', handleResize, false);
 
 //
 
