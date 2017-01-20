@@ -11,7 +11,6 @@ body {
 /* Look into width. Think it's relative to the entire window, because position is set to absolute (for vertical positioning to work. The current width of 60% is just a number that seems to work, not very satisfying. Was 50%, which would seem right given the 1:2:1 flexbox layout, but it was two short when window was resized very narrow. Maybe something to do with the scrollbar?) */
 #highlight {
   position: absolute;
-  width: 512px;
   background: #fffbf1;
   /* Fallback needed for next two lines */
   mix-blend-mode: multiply;

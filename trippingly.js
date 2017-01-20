@@ -40,6 +40,8 @@ var endTop = 0;
 var endHt = 0;
 var endScroll = 0;
 
+var highlightWidth = text.clientWidth;
+
 var currentIndex = -1;
 
 var currentLink = null;
@@ -54,6 +56,7 @@ var scrolling = false;
 
 var linkMode = 'plain';
 
+// Not used yet
 var supportsMixBlendMode = window.getComputedStyle(document.body).mixBlendMode;
 
 //
@@ -100,6 +103,7 @@ function prepMoveHighlight() {
   endHt = seg.clientHeight;
   startTop = highlight.offsetTop;
   startHt = highlight.clientHeight;
+  highlightWidth = text.clientWidth;
 }
 
 function prepScroll() {
@@ -140,7 +144,7 @@ function animate() {
   if (movingHighlight) {
     currentTop = Math.round(ease(startTop, endTop));
     currentHt = Math.round(ease(startHt, endHt));
-    var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px;';
+    var cssText = 'top: ' + currentTop + 'px; height: ' + currentHt + 'px; width: ' + highlightWidth + 'px;';
     highlight.style = cssText;
   }
 
