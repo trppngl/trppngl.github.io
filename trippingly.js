@@ -155,7 +155,7 @@ function animate() {
   }
 
   // Quick and dirty
-  if (resizing === true) {
+  /* if (resizing === true) {
     highlightWidth = text.clientWidth;
     var seg = segs[currentIndex];
     var tempTop = seg.offsetTop;
@@ -167,7 +167,7 @@ function animate() {
     highlight.style = cssText;
     window.scrollBy(0, (tempScrollOffset * -1));
     resizing = false;
-  }
+  } */
 
   if (movingHighlight || scrolling) {
     if (currentFrame < totalFrames) {
@@ -312,7 +312,16 @@ function handleKeydown(e) {
 }
 
 function handleResize() {
-  resizing = true;
+  highlightWidth = text.clientWidth;
+  var seg = segs[currentIndex];
+  var tempTop = seg.offsetTop;
+  var tempHt = seg.clientHeight;
+  var tempScrollOffset = currentTop - tempTop;
+  currentTop -= tempScrollOffset;
+  console.log(tempScrollOffset);
+  var cssText = 'top: ' + currentTop + 'px; height: ' + tempHt + 'px; width: ' + highlightWidth + 'px;';
+  highlight.style = cssText;
+  window.scrollBy(0, (tempScrollOffset * -1));
 }
 
 // Event listeners
