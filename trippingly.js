@@ -154,21 +154,6 @@ function animate() {
     window.scrollTo(0, currentScroll);
   }
 
-  // Quick and dirty
-  /* if (resizing === true) {
-    highlightWidth = text.clientWidth;
-    var seg = segs[currentIndex];
-    var tempTop = seg.offsetTop;
-    var tempHt = seg.clientHeight;
-    var tempScrollOffset = currentTop - tempTop;
-    currentTop -= tempScrollOffset;
-    console.log(tempScrollOffset);
-    var cssText = 'top: ' + currentTop + 'px; height: ' + tempHt + 'px; width: ' + highlightWidth + 'px;';
-    highlight.style = cssText;
-    window.scrollBy(0, (tempScrollOffset * -1));
-    resizing = false;
-  } */
-
   if (movingHighlight || scrolling) {
     if (currentFrame < totalFrames) {
       currentFrame += 1;
@@ -311,17 +296,17 @@ function handleKeydown(e) {
   }
 }
 
+// Quick and dirty
 function handleResize() {
-  highlightWidth = text.clientWidth;
   var seg = segs[currentIndex];
-  var tempTop = seg.offsetTop;
-  var tempHt = seg.clientHeight;
-  var tempScrollOffset = currentTop - tempTop;
-  currentTop -= tempScrollOffset;
-  console.log(tempScrollOffset);
-  var cssText = 'top: ' + currentTop + 'px; height: ' + tempHt + 'px; width: ' + highlightWidth + 'px;';
+  var segTop = seg.offsetTop;
+  var segHt = seg.clientHeight;
+  highlightWidth = seg.clientWidth;
+  var tempScrollOffset = segTop - currentTop;
+  window.scrollBy(0, tempScrollOffset);
+  currentTop += tempScrollOffset;
+  var cssText = 'top: ' + currentTop + 'px; height: ' + segHt + 'px; width: ' + highlightWidth + 'px;';
   highlight.style = cssText;
-  window.scrollBy(0, (tempScrollOffset * -1));
 }
 
 // Event listeners
