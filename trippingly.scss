@@ -9,7 +9,7 @@ body {
   font-feature-settings: 'kern', 'liga', 'clig', 'onum' 1;
   margin: 0;
   background-image: linear-gradient(#eee 1px, transparent 1px);
-  background-size: 100% 16px;
+  background-size: 100% 12px;
 }
 
 #text {
@@ -25,14 +25,17 @@ body {
   pointer-events: none; /* So pointer events pass through highlight to elements underneath */
 }
 
-/*
+p {
+  margin: 0;
+}
+
+/* 24-36-48 */
 
 .seg {
   text-align: center;
   font-size: 36px;
   line-height: 48px;
   padding: 12px 24px;
-  margin: 0;
 }
 
 .note {
@@ -40,17 +43,21 @@ body {
   font-size: 24px;
   line-height: 36px;
   padding: 0 36px;
+}
+
+.note p {
   margin: 12px 0;
 }
 
-*/
+/* 24-32-48 */
+
+/*
 
 .seg {
   text-align: center;
   font-size: 32px;
   line-height: 48px;
   padding: 8px 16px;
-  margin: 0;
 }
 
 .note {
@@ -58,16 +65,15 @@ body {
   font-size: 24px;
   line-height: 32px;
   padding: 0 32px;
+}
+
+.note p {
   margin: 16px 0;
 }
 
 /* Convert some seg and note settings to ems? */
 
 /**/
-
-.note.v {
-  color: #8686b3;
-}
 
 span {
   /* display: inline-block; */
