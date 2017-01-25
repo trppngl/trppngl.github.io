@@ -8,7 +8,7 @@ body {
   background-size: 100% 12px; }
 
 #text {
-  max-width: 512px;
+  max-width: 576px;
   margin: 0 auto; }
 
 #highlight {
@@ -30,7 +30,7 @@ p {
   padding: 12px 24px; }
 
 .note {
-  text-align: justify;
+  text-align: left;
   font-size: 24px;
   line-height: 36px;
   padding: 0 24px; }
