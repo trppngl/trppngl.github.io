@@ -5,103 +5,65 @@ body {
   font-feature-settings: 'kern', 'liga', 'clig', 'onum' 1;
   margin: 0;
   background-image: linear-gradient(#eee 1px, transparent 1px);
-  background-size: 100% 12px; }
-
+  background-size: 100% 12px;
+}
 #text {
-  max-width: 576px;
-  margin: 0 auto; }
-
+  max-width: 528px;
+  margin: 0 auto;
+}
 #highlight {
   position: absolute;
   background: #fffbf1;
-  /* Fallback needed for next two lines */
+/* z-index -1 */
   mix-blend-mode: multiply;
   pointer-events: none;
-  /* So pointer events pass through highlight to elements underneath */ }
-
+}
 p {
-  margin: 0; }
-
-/* 24-36-48 */
+  margin: 0;
+}
 .seg {
   text-align: center;
   font-size: 36px;
   line-height: 48px;
-  padding: 12px 24px; }
-
-.note {
-  text-align: left;
-  font-size: 24px;
-  line-height: 36px;
-  padding: 0 24px; }
-
-.headword {
-  font-size: 32px;
-  /* font-weight: 600;
-  /* Font weight seems to be working, but make sure */
-  margin: 12px 0 0 0; }
-
-.info {
-  margin: 12px 0; }
-
-.example {
-  margin: 12px 0; }
-
-/* 24-32-48 */
-/*
-
-.seg {
-  text-align: center;
-  font-size: 32px;
-  line-height: 48px;
-  padding: 8px 16px;
+  padding: 12px 24px;
 }
-
 .note {
   text-align: justify;
   font-size: 24px;
-  line-height: 32px;
-  padding: 0 32px;
+  line-height: 36px;
+  padding: 0 24px;
+  hyphens: auto /* Doesn't work in Chrome and others */;
 }
-
 .headword {
   font-size: 32px;
-  font-weight: bold;
-  margin: 16px 0 0 0;
+/* font-weight 600 */
+/* Font weight seems to be working, but make sure */
+  margin: 12px 0 0 0;
 }
-
 .IPA {
+  line-height: 24px;
 }
-
+.word-class {
+  font-style: italic;
+  line-height: 24px;
+}
+.rank {
+  line-height: 24px;
+}
 .info {
-  margin: 16px 0;
+  margin: 12px 0;
 }
-
 .example {
-  margin: 16px 0;
+  margin: 12px 0;
 }
-
-*/
-/* Convert some seg and note settings to ems? */
-/**/
 span {
-  /* display: inline-block; */ }
-
+  display: inline-block;
+}
 span.link {
-  /* background-position: 0 1.2em;
-  background-size: 1px 1px;
-  background-repeat: repeat-x; */
+/* background-position 0 1.2em
+  background-size 1px 1px
+  background-repeat repeat-x
+  background-image linear-gradient(#aaa, #aaa) */
   cursor: pointer;
-  background: #f6f0fc; }
-
-/*
-span.v {
-  background-image: linear-gradient($v-underline, $v-underline);
+  background: #f6f0fc;
 }
-
-span.g {
-  background-image: linear-gradient(#aaa, #aaa);
-}
-*/
-
-/*# sourceMappingURL=trippingly.css.map */
