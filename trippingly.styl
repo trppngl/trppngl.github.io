@@ -1,5 +1,6 @@
 bg-color = #fff
-text-color = #2b2b2b
+/* text-color = rgba(5, 5, 5, 0.85) */
+text-color = #333 /* #2c2c2c */
 highlight-color = #fffbf1
 
 body
@@ -11,7 +12,7 @@ body
   background-image linear-gradient(#eee 1px, transparent 1px)
   background-size 100% 12px
 
-#text
+#column
   max-width: 528px
   margin: 0 auto
 
@@ -24,13 +25,16 @@ body
 
 p
   margin 0
-
+  
 .seg
   text-align center
   font-size 36px
   line-height 48px
   padding 12px 24px
 
+.hide
+  display none
+  
 .note
   text-align justify
   font-size 24px
@@ -39,8 +43,8 @@ p
   hyphens auto /* Doesn't work in Chrome and others */
 
 .headword
-  font-size 32px
-  /* font-weight 600 */
+  font-size 30px
+  font-weight 600
   /* Font weight seems to be working, but make sure */
   margin 12px 0 0 0
 

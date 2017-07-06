@@ -1,6 +1,6 @@
 var audio = document.getElementById('audio');
 var highlight = document.getElementById('highlight');
-var text = document.getElementById('text');
+var column = document.getElementById('column');
 
 var segs = [];
 segs.push.apply(segs, document.getElementsByClassName('seg'));
@@ -10,7 +10,7 @@ segs.push.apply(segs, document.getElementsByClassName('seg'));
 var numSegs = segs.length;
 
 var segData = [];
-for (i = 0; i < numSegs; i += 1) {
+for (var i = 0; i < numSegs; i += 1) {
   var seg = segs[i];
   var times = seg.getAttribute('data-times').split(' ');
   segData.push({
@@ -40,7 +40,7 @@ var endTop = 0;
 var endHt = 0;
 var endScroll = 0;
 
-var highlightWidth = text.clientWidth;
+var highlightWidth = column.clientWidth;
 
 var currentIndex = -1;
 
@@ -98,13 +98,45 @@ function startSeg(targetIndex) {
   }
 }
 
+function playAudio() {
+  audio.play();
+  audioTimer = window.setInterval(checkStop, 20);
+}
+
+function checkStop() {
+  if (audio.currentTime > segData[currentIndex].stop && (!playAll || currentIndex === numSegs - 1)) {
+    pauseAudio();
+    playAll = false;
+  } else if (audio.currentTime > segData[currentIndex + 1].start) {
+    userStartSeg = false;
+    hardStartSeg = false;
+    startSeg(currentIndex + 1);
+  }
+}
+
+function pauseAudio() {
+  audio.pause();
+  window.clearInterval(audioTimer);
+}
+
+function togglePlayAll() {
+  if (audio.paused) {
+    playAll = true;
+    next();
+  } else {
+    playAll = !playAll;
+  }
+}
+
+// Highlight & scroll
+
 function prepMoveHighlight() {
   var seg = segs[currentIndex];
   endTop = seg.offsetTop;
   endHt = seg.clientHeight;
   startTop = highlight.offsetTop;
   startHt = highlight.clientHeight;
-  highlightWidth = text.clientWidth;
+  highlightWidth = column.clientWidth;
 }
 
 function prepScroll() {
@@ -177,38 +209,6 @@ function ease(startValue, endValue) { // Break into two functions?
   return (endValue - startValue) * easingMultipliers[easingFunction][currentFrame] + startValue;
 }
 
-//
-
-function playAudio() {
-  audio.play();
-  audioTimer = window.setInterval(checkStop, 20);
-}
-
-function checkStop() {
-  if (audio.currentTime > segData[currentIndex].stop && (!playAll || currentIndex === numSegs - 1)) {
-    pauseAudio();
-    playAll = false;
-  } else if (audio.currentTime > segData[currentIndex + 1].start) {
-    userStartSeg = false;
-    hardStartSeg = false;
-    startSeg(currentIndex + 1);
-  }
-}
-
-function pauseAudio() {
-  audio.pause();
-  window.clearInterval(audioTimer);
-}
-
-function togglePlayAll() {
-  if (audio.paused) {
-    playAll = true;
-    next();
-  } else {
-    playAll = !playAll;
-  }
-}
-
 // Links
 
 function toggleLinkMode(input) {
@@ -224,7 +224,7 @@ function toggleLinkMode(input) {
 }
 
 function writeSegs() {
-  for (i = 0; i < numSegs; i += 1) {
+  for (var i = 0; i < numSegs; i += 1) {
     if (segData[i][linkMode]) {
       segs[i].innerHTML = segData[i][linkMode];
     } else {
@@ -257,11 +257,17 @@ function showCurrentNote() {
 
 // Event handlers
 
-function handleTextClick(e) {
+function handleClick(e) {
+  var targetIndex;
   if (e.target.classList.contains('seg')) {
+    targetIndex = Number(e.target.getAttribute('id'));
+  } else if (e.target.parentElement.classList.contains('seg')) {
+    targetIndex = Number(e.target.parentElement.getAttribute('id'));
+  }
+  if (targetIndex != undefined) {
     userStartSeg = true;
     hardStartSeg = true;
-    startSeg(Number(e.target.getAttribute('id')));
+    startSeg(targetIndex);
   } else if (e.target.tagName.toLowerCase() === 'span') { // Other text spans?
     currentLink = e.target;
     toggleNote(document.getElementById(currentLink.getAttribute('data-note')));
@@ -315,7 +321,7 @@ window.addEventListener('keydown', handleKeydown, false);
 window.addEventListener('resize', handleResize, false);
 // window.addEventListener('hashchange', hashNote, false);
 
-text.addEventListener('click', handleTextClick, false);
+document.addEventListener('click', handleClick, false);
 
 //
 
